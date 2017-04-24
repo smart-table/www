@@ -1,0 +1,54 @@
+include ../svg/books
+include ../svg/stack
+include ../svg/video-camera
+
+header(role="banner")
+    nav
+        ul
+            li
+                a(href='./') Home
+            li
+                a(href='#documentation-menu', role='button', aria-haspopup='true', aria-controls='documentation-menu')
+                    span(aria-hidden='true')
+                        +books(true)
+                    span Documentation
+            li
+                a(href='#integration-menu', role='button', aria-haspopup='true', aria-controls='integration-menu')
+                    span(aria-hidden='true')
+                        +stack(true)
+                    span Integrations
+            li
+                a(href='./demo.html', role='button')
+                    span(aria-hidden='true')
+                        +video-camera(true)
+                    span Demo
+        ul#documentation-menu(role='menu')
+            li(role='menuitem')
+                a(href="./getting-started.html") Getting started
+            li(role='menuitem')
+                a(href="./table-state.html") Table state
+            li(role='menuitem')
+                a(href='./extend.html') Extend smart table
+            li(role='menuitem')
+                a(href="./table.html") Table directive
+            li(role='menuitem')
+                a(href="./sort.html") Sort directive
+            li(role='menuitem')
+                a(href="./filter.html") Filter directive
+            li(role='menuitem')
+                a(href="./search.html") Search directive
+            li(role='menuitem')
+                a(href="./working-indicator.html") Working Indicator directive
+            li(role='menuitem')
+                a(href="./summary.html") Summary directive
+            li(role='menuitem')
+                a(href="./slice.html") Slice directive
+        ul#integration-menu(role='menu')
+            li(role='menuitem')
+                a(href="#") Vanilla js
+            li(role='menuitem')
+                a(href="#") React/Preact
+            li(role='menuitem')
+                a(href="#") Vue
+            li(role='menuitem')
+                a(href="#") Flaco

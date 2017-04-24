@@ -1,0 +1,27 @@
+extends ../layout/main
+include ../mixins/helper
+block content
+    h1 Documentation - Sort directive
+    p Create a sort directive to conveniently interact with the order and sort capabilities of your smart table instance
+    a(href='') See in CodePen.
+    +left-container()
+        h2#factory Factory
+    h3 Arguments
+    p The factory takes as argument an options object with the following properties
+    dl
+        dt.mandatory table
+        dd A reference to a #[a(href='./table.html') smart table instance]
+        dt.mandatory pointer
+        dd A pointer string which refers to a property of your items which you will want to order by
+        dt cycle
+        dd a boolean which will tell the directive whether is has to go back to the initial state in the toggle cycle. It defaults to false
+    +left-container()
+        h2 Instance API
+    h3#toggle .toggle
+    p Will switch from one sort state to another in the toggle cycle.
+    p First time it is called, it will order with the ascending direction, second time with the descending direction. The third time it depends whether you have configured the directive to cycle or not. If yes, it will go back to the initial state (not sorted), if not it will order again with the ascending direction.
+    h3#onSortToggle .onSortToggle
+    p It will register an event listener to the #[code TOGGLE_SORT] event (triggered whenever the sort part of the table state changes)
+    h4 Arguments
+    p It takes as argument a function whose unique argument will be the current sort part of the table state.
+

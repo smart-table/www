@@ -1,0 +1,33 @@
+extends ../layout/main
+include ../mixins/helper
+
+block content
+    h1 Documentation - Search directive
+    p Create a search directive to conveniently interact with the search capabilities of your smart table instance
+    a(href='') See in CodePen
+    +left-container()
+        h2#factory Factory
+    h3 Arguments
+    p The factory takes as argument an options object with the following properties
+    dl
+        dt.mandatory table
+        dd An instance of smart table
+        dt scope
+        dd An array of pointer strings which refer to the item properties you want to include in the search
+    +left-container()
+        h2#api Instance API
+    h3 .search
+    p Will search your data based on the directive configuration and the search input
+    h4 Arguments
+    dl
+        dt input
+        dd The input string
+    h3 .onSearchChange
+    p Will register an event listener to the #[code SEARCH_CHANGED] event (triggered whenever the search part of the table state changes)
+    h4 Arguments
+    dl
+        dt listener
+        dd A function whose unique argument will be the current search part of the table state
+
+
+

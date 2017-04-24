@@ -1,0 +1,372 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primaryColor: #ff6300;
+    --fontColor: #173f46;
+    --backgroundColor: #fbfbfb;
+    --secondaryColor: #0097f3;
+}
+
+body {
+    font-size: calc(1em + 0.2vw);
+    background: var(--backgroundColor);
+    color: var(--fontColor);
+    box-sizing: border-box;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+body * {
+    box-sizing: inherit;
+}
+
+main {
+    max-width: 60rem;
+    margin: auto;
+    margin-top: 1em;
+}
+
+a {
+    color: inherit;
+    transition: background 0.4s, color 0.4s;
+}
+
+main a {
+    color: var(--secondaryColor);
+}
+
+main a:hover, main a:focus {
+    background: var(--secondaryColor);
+    color: white;
+}
+
+em, strong {
+    color: var(--primaryColor);
+}
+
+h3 {
+    display: inline-block;
+    margin: 0.5rem 0;
+    padding: 0.2rem 2rem 0.2rem 0.5rem;
+    background: var(--primaryColor);
+    color: white;
+    font-weight: normal;
+    background-image: linear-gradient(225deg, var(--backgroundColor), var(--backgroundColor) 1.5rem, transparent 1.5rem);
+}
+
+.feature-container:nth-child(2n) h3 {
+    padding: 0.2rem 0.5rem 0.2rem 2rem;
+    background-image: linear-gradient(135deg, var(--backgroundColor), var(--backgroundColor) 1.5rem, transparent 1.5rem);
+}
+
+p {
+    margin: 1.2rem 0;
+    line-height: 1.5;
+}
+
+h1, h2 {
+    text-align: center;
+    display: inline-block;
+    border-bottom: 2px solid var(--primaryColor);
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.visually-hidden {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+}
+
+nav > ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    align-items: stretch;
+    justify-content: space-around;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+nav li {
+    display: inline-flex;
+}
+
+nav a {
+    display: inline-flex;
+    align-items: center;
+    padding: 1em 2em;
+    text-decoration: none;
+    transition: background 0.4s, color 0.4s;
+    position: relative;
+    width: 100%;
+}
+
+nav a:hover, nav a:focus {
+    background: var(--primaryColor);
+    color: white;
+    outline: none;
+}
+
+nav a:after {
+    display: inline-block;
+    position: absolute;
+    height: 2px;
+    background: white;
+    content: '';
+    left: 50%;
+    right: 50%;
+    bottom: 0.8em;
+}
+
+nav a:focus:after,
+nav a:hover:after {
+    left: 2em;
+    right: 2em;
+    transition: left 0.4s, right 0.4s;
+}
+
+[role=menuitem] {
+    flex-grow: 1;
+    flex-basis: 25%;
+    text-align: center;
+}
+
+[role='menu'] {
+    font-size: 0.9rem;
+    color: #12474e;
+    flex-wrap: wrap;
+    border-top: 2px solid var(--primaryColor);
+    border-bottom: 1px solid var(--primaryColor);
+    box-shadow: 0 2px 4px 0px #b3b3b3;
+}
+
+[role='menu']:not(:target) {
+    display: none;
+}
+
+.feature-container, .punchline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0.8em;
+    min-height: 15em;
+}
+
+.feature-container {
+    justify-content: space-around;
+    margin-bottom: 2rem;
+}
+
+.feature-container .svg-container svg {
+    height: 7rem;
+    width: 7rem;
+    fill: currentColor;
+}
+
+.method-container {
+    padding: 2em;
+}
+
+.punchline {
+    font-size: 1.1rem;
+    justify-content: space-between;
+    background-color: var(--fontColor);
+    background-image: linear-gradient(135deg, var(--backgroundColor), var(--backgroundColor) 35%, transparent 35%),
+    linear-gradient(-45deg, var(--backgroundColor), var(--backgroundColor) 5rem, transparent 5rem);
+}
+
+.punchline em, .punchline strong {
+    color: salmon;
+}
+
+.center-container {
+    text-align: center;
+}
+
+.right-container {
+    text-align: right;
+}
+
+a.github {
+    background: var(--primaryColor);
+    padding: 0.5em 1em;
+    color: white;
+    border-color: #c43322;
+    border-width: 0 2px 2px 0;
+    border-style: solid;
+    border-radius: 4px;
+    text-decoration: none;
+    text-shadow: 1px 1px black;
+    display: inline-flex;
+    align-items: center;
+}
+
+.github:hover, .github:focus {
+    background: #c43322;
+}
+
+.punchline-description {
+    flex-basis: 66%;
+    color: var(--backgroundColor);
+    padding: 1.5em 3em;
+}
+
+.framed {
+    background-image: linear-gradient(180deg, var(--primaryColor), transparent),
+    linear-gradient(90deg, var(--primaryColor), transparent),
+    linear-gradient(0deg, var(--primaryColor), transparent var(--edgeLength, 50%)),
+    linear-gradient(270deg, var(--primaryColor), transparent var(--edgeLength, 50%));
+    background-size: var(--edgeWidth, 1px) 85%, 85% var(--edgeWidth, 1px), var(--edgeWidth, 1px) 100%, 100% var(--edgeWidth, 1px);
+    background-repeat: no-repeat;
+    background-position: 0 0, 0 0, right, bottom right;
+}
+
+.feature-description {
+    flex-basis: 75%;
+    padding: 0;
+    font-size: 0.95em;
+}
+
+a[href='#main'] {
+    position: fixed;
+    top: -999px;
+}
+
+#main-footer {
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2em;
+    background: var(--fontColor);
+    color: var(--backgroundColor);
+    font-weight: lighter;
+    border-top: 2px solid var(--primaryColor);
+    margin-top: 2em;
+}
+
+#main-footer a:hover, #main-footer a:focus {
+    color: var(--primaryColor);
+}
+
+#main-footer img {
+    height: 1em;
+}
+
+code {
+    background: var(--fontColor);
+    color: white;
+    padding: 0 0.3em;
+}
+
+.icon svg {
+    height: 1.5em;
+}
+
+.svg-container.icon {
+    padding: 0 0.5em;
+}
+
+.svg-container svg {
+    fill: currentColor;
+}
+
+blockquote {
+    padding: 0.7em;
+    margin: 2em 0;
+    --edgeLength: 2em;
+}
+
+blockquote p {
+    margin: 0;
+    font-weight: lighter;
+}
+
+blockquote cite {
+    display: block;
+    text-align: right;
+    color: var(--primaryColor);
+}
+
+.quote-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+dt {
+    display: inline-block;
+    border-bottom: 1px solid var(--primaryColor);
+    font-weight: bolder;
+    padding: 0.3em 0;
+}
+
+dt:not(:first-child) {
+    margin-top: 0.8em;
+}
+
+dd {
+    padding-top: 0.5em;
+    font-style: italic;
+}
+
+h4 {
+    color: var(--primaryColor);
+}
+
+@media (max-width: 780px) {
+    body {
+        padding: 0.3em;
+    }
+
+    .feature-container, .punchline, nav > ul, #main-footer {
+        flex-direction: column;
+        align-content: stretch;
+    }
+
+    #main-footer {
+        padding: 0.5em 0.2em;
+    }
+
+    .punchline {
+        background-image: none;
+    }
+
+    .feature-container:nth-child(2n) {
+        flex-direction: column-reverse;
+    }
+
+    .feature-container:nth-child(2n) h3 {
+        padding: 0.2rem 2rem 0.2rem 0.5rem;
+        background-image: linear-gradient(225deg, var(--backgroundColor), var(--backgroundColor) 1.5rem, transparent 1.5rem);
+    }
+
+    .punchline-description {
+        padding: 0;
+    }
+
+    .right-container {
+        text-align: left;
+    }
+
+    .feature-container .svg-container svg {
+        height: 5rem;
+        width: 5rem;
+    }
+}
+
+
+
+
+

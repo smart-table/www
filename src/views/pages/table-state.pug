@@ -1,0 +1,20 @@
+extends ../layout/main
+
+block content
+    h1 Documentation table state
+    p The documentation often refers to a #[em table state]. This is the JSON representation of an instance of a smart table.
+    h2 Structure
+    p The table state has different part related to different capabilities of a smart table. Here is its canonical structure
+    pre
+        code.
+            {
+                sort: {pointer: 'foo', direction: 'asc'},
+                slice: {page: 4, size: 25},
+                search: {scope: ['foo', 'bar'], value: 'blah'},
+                filter: {
+                    foo: [{operator: 'is', value: 'blah', type: 'string'}]
+                }
+            }
+    p When we use the "sort part" of the table state we refer to the object defined by the sort property of the table state
+    p These parts can be the empty object #[code {}] and default values will be used instead
+    p Normally you should not modify yourself the table state and you should rather call the #[a(href='./table.html') table directive api]

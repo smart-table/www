@@ -1,0 +1,38 @@
+{
+  "name": "smart-table-www",
+  "version": "1.0.0",
+  "description": "documentation website for smart-table",
+  "main": "index.js",
+  "scripts": {
+    "build:pages": "node ./scripts/buildPages.js",
+    "build:assets": "cp -R ./src/assets/ ./dist/assets/",
+    "build:svg": "node ./scripts/buildInlineSvgs.js",
+    "build": "npm run build:svg && npm run build:pages && npm run build:assets"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smart-table/www.git"
+  },
+  "author": "Laurent Renard",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smart-table/www/issues"
+  },
+  "homepage": "https://github.com/smart-table/www#readme",
+  "dependencies": {
+    "material-design-icons": "^3.0.1",
+    "preact": "^7.2.0",
+    "prismjs": "^1.6.0",
+    "pug": "^2.0.0-beta11",
+    "rollup": "^0.41.4",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "smart-table-core": "^1.3.2"
+  },
+  "devDependencies": {
+    "lrtiste": "^1.0.2",
+    "lrtiste-theme": "^1.0.4",
+    "postcss": "^5.2.16",
+    "postcss-cssnext": "^2.10.0"
+  }
+}

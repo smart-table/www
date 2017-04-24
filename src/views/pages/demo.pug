@@ -1,0 +1,49 @@
+extends ../layout/main
+
+block content
+    h1#demo A table component built with Smart table
+    p This is an "advanced" example of a table component using smart-table and other libraries.
+    h2 Data
+    p The data set is made of #[strong 25000 items].
+    p Some properties are #[em nested] and have different types (String, Number, Date, Enum).
+    p The degree of entropy varies from one property to the other: the most "chaotic" property being the date of birth.
+    h2 Search
+    p The top input provides a full text search scoped to the surname and name columns and is case sensitive.
+    h2 Sort
+    p Every column can be ordered with the following particularities
+    ul
+        li Surname is the only column to have tree states (ascend, descend and no sort).
+        li Surname and Name column sort on nested properties ("name.last" and "name.first")
+        li Date of birth is the only column to be sorted with the descending direction first.
+        li Sorted properties types are Number, String and Date
+    h2 Filter
+    p Every column can expand a filter pop up menu withe the following particularities
+    ul
+        li Surname and Name filter on nested properties
+        li Date of birth filter on Date with the operator greater or equal to.
+        li Gender operates as a strict filter: "male" is included in "female" but you can filter by "male" only
+        li Size combines two clauses in a AND filter
+    h2 CRUD
+    p you can edit the data
+    ul
+        li Remove an item by activating the remove button: this will trigger a refresh of the table so if you table is currently in a sorted/filtered/searched state, it will be updated accordingly
+        li Patch an item (inline editing). You can toggle the edit mode of a cell by clicking the cell or by pressing #[kbd Enter] when the cell is focused. The patch will not cause a refresh of the table (you could have used the update method of the crud module instead)
+    h2 Accessibility
+    p The table is accessible by keyboard more or less as specified by the #[a(href='') WAI Aria guide]
+    ul
+        li Only one cell will be in the TAB sequence as any composite widget
+        li You can navigate from one cell to the other using the arrow keys
+        li If a cell has sub widgets which do not need arrow keys they will be focused instead of the cell (like the headers)
+        li Otherwise you will need to "activate the cell" by pressing #[kbd Enter], afterward the key strokes will be "trapped" in the sub widget except #[kbd Escape] which will turn back to the cell navigation mode. For example, every data cell is editable.
+    h2 Pagination
+    p The footer contains a summary of the data set, buttons to navigate from one page to the other and a select input to change the page size
+    h2 Bundle
+    p The whole bundle weights #[strong 10kb], difficult to beat ! If you can I buy you a mojito next time you visit Cuba. It is made of
+    ul
+        li #[a(href='#') Flaco] a whole view library which is itself very lightweight indeed. (not specific to smart table)
+        li #[a(href='#') smart-table-core] library
+        li #[a(href='#') smart-table-crud] extension module for the Remove/Edit features
+        li #[a(href='#') smart-table-keyboard] module for the keyboard navigation following the #[a(href='') grid pattern] (not specific to smart-table)
+        li Some code to glue everything together. Note some of it consists in turning smart table into a #[a(href="") Redux] store and could worth its own module
+
+

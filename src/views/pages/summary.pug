@@ -1,0 +1,39 @@
+extends ../layout/main
+include ../mixins/helper
+
+block content
+    h1 Documentation - Summary directive
+    p
+        | The displayed collection may not reveal the full description of a table state: for example if you decide to show twenty items per page, the displayed collection won't tell you how many items match your current search.
+        | This directive will allow you to know that information by listening to the #[code SUMMARY_CHANGED] event.
+    p Note that the #[a(href='./slice.html') slice directive] will include the behavior of this directive as well.
+    a(href='') See in CodePen
+    +left-container()
+        h2#factory Factory
+    h3 Arguments
+    p The factory takes as argument an options object with the following properties
+    dl
+        dt.mandatory table
+        dd An instance of smart table
+    +left-container()
+        h2#api Instance API
+    h3 .onSummaryChange
+    p Register an event listener to the #[code SUMMARY_CHANGED] event (triggered whenever the displayed collection changes)
+    h4 Arguments
+    dl
+        dt listener
+        dd
+            | A function whose unique argument will be an object with the following structure
+            dl
+                dt page
+                dd The index of the currently displayed page (starting at 1)
+                dt size
+                dd The current size of the page
+                dt filteredCount
+                dd The number of items in your data set matching your current search and filter query
+
+
+
+
+
+

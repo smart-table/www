@@ -1,0 +1,10 @@
+include ../svg/github
+
+footer#main-footer
+    -var year = (new Date()).getFullYear();
+    p Made with love in #[span(class='visually-hidden') Cuba] #[img(src='./assets/cuba.svg', alt='Cuba')]
+    p MIT licence - #{year} - Laurent Renard copyright
+    a(href="#")
+        span.visually-hidden Source code
+        +github()
+

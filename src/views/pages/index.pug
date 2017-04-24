@@ -1,0 +1,116 @@
+extends ../layout/main
+include ../svg/eye-blocked
+include ../svg/rocket
+include ../svg/sort-amount-desc
+include ../svg/filter
+include ../svg/search
+include ../svg/tree
+include ../svg/github
+include ../svg/leaf
+include ../svg/make-group
+include ../mixins/helper
+
+block content
+    div.punchline
+        img(src='', aria-hidden='true', alt='smart table logo')
+        div.punchline-description
+            +center-container()
+                h1 Smart Table
+            p Transforms any dumb Javascript data array into a #[strong smart] collection you can #[em search], #[em filter], #[em sort], #[em paginate].
+            p It turns out to be very nice to build #[strong table] and #[strong grid] user interface components, but not only.
+            +center-container()
+                a.github(href='#')
+                    span(aria-hidden='true')
+                        +github(true)
+                    span View on Github
+    section
+        +center-container()
+            h2#features Features
+        div.feature-container.framed
+            +eye-blocked()
+            div.feature-description
+                +right-container()
+                    h3 View agnostic
+                p Smart table only adds some nice behavior to a data collection and does not depend on any specific platform or UI framework. You can make an array become #[em smart] in your browser but also in #[a(href="#") nodejs].
+                p Moreover, as smart table is fully decoupled from any view engine, it is really easy to use with your favourite view library to build cool grid components or any type of smart list components.
+                p Go, and check our bindings for:
+                ul
+                    li
+                        a(href="") Vanilla Javascript
+                    li
+                        a(href="") React / Preact
+                    li
+                        a(href="#") Vue
+                    li
+                        a(href="") Flaco
+        div.feature-container.framed
+            div.feature-description
+                h3 Fast
+                p #[strong Performance] is a top priority so that you can sort or filter your smart collection in less than a second even for #[em big] data set. Check out or #[a(href='#demo') demo table component] which features a data set of #[strong 25000] entries.
+            +rocket()
+        div.feature-container.framed
+            +sort-amount-desc()
+            div.feature-description
+                +right-container()
+                    h3 Sort
+                p Smart table is shipped with a fast sorting API which supports
+                ul
+                    li Any type (string, numbers, date, etc).
+                    li Nested properties on objects.
+                    li Different sort directions.
+                p And by design, smart table is like lego bricks: if you don't like its sort functionality you can swap it with your own without any effort.
+        div.feature-container.framed
+            div.feature-description
+                h3 Filter
+                p With smart table, filter a data collection is a piece of cake.
+                ul
+                    li For any type: whether you want to see your data as String, Number, Date, Boolean, etc.
+                    li For nested properties: so you don't need to flatten your data set.
+                    li With a wide range of operators: strict equal, includes, lower than, greater than, etc.
+                    li Bring your own: and again if you don't like it just use your own filter instead.
+            +filter()
+        div.feature-container.framed
+            +make-group()
+            div.feature-description
+                +right-container()
+                    h3 Paginate
+                p Often, you will not want to display thousands of items to your users. Smart table provide a flexible way to accommodate your user by providing a #[em slice] API to choose which data page to display and its size.
+        div.feature-container.framed
+            div.feature-description
+                h3 Full text search
+                p Smart table comes with a basic built in full text search API. A bit like #[a(href='') ElasticSearch], we consider full text search a different thing from more sophisticated and specific filtered query. Again if you want something more elaborated (fuzzy search, indexed search, etc), no problem, just use your own or a community's one.
+            +search()
+        div.feature-container.framed
+            +leaf()
+            div.feature-description
+                +right-container()
+                    h3 Lightweight
+                p They all say that. But really performance and modularity are both in smart table DNA. Instead of having a #[em 200kb pretend to do a thousand things] library, smart table focuses on doing few fundamental things very well and on providing a strong and reliable #[strong extensible architecture]. As a result smart table weights less than #[strong 3kb]. When you have barely started downloading any other grid library, your smart-table will already be ready to please your users.
+        div.feature-container.framed
+            div.feature-description
+                h3 Extensible
+                p Smart table is #[em just] Javascript and gives all the flexibility the language can provide with composition patterns.
+                ul
+                    li You can #[em compose] a table into another one: that is what the #[a(href="") smart-table-crud] plugin does.
+                    li You can #[em decorate] a part of its API: that is what the #[a(href="") smart-table-perf] module does.
+                    li You can #[em mixin] some other behaviour and override the default table. That's how you #[a(href='') move the logic to your server] without changing a single line of code.
+                    li You can use your smart table as a data source: that is what the #[a(href='') smart-table-virtualizer] module does.
+                p Smart table is by design #[strong modular] and you can bring in more features as your project matures without being stuck in a constraining API.
+            +tree()
+    section
+        +center-container()
+            h2#testimonies Testimonies
+        p That's usually where authors will quote some others smart people from Twitter with all the good a friend at Facebook, Twitter, etc says about their library. But sadly no one said anything about smart-table and you can't follow me on Twitter, so I will rather quote:
+        ul.quote-list
+            li
+                blockquote(lang="fr").framed
+                    p C'est joli mon chéri chéri, mais la police est trop grosse.
+                    cite My girlfriend
+
+            li
+                blockquote.framed
+                    p Cui Cui Cui ... Smart table... Cui Cui Cui.
+                    cite A colibri in the garden
+
+
+
