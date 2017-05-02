@@ -1,0 +1,54 @@
+extends ../layout/main
+include ../mixins/helper
+include ../mixins/code
+
+block content
+    +center-container()
+        h1 Documentation - Extend Smart Table
+    p There are many discussions on the benefits to write #[strong modular] code in Javascript and how to do it (I recommend the #[a(href='') essays of RG on the topics]). This is a very tricky subject although Javascript is a very powerful language when it comes to create #[em structural or behavioral design patterns].
+    p Smart table tries to make the developer feel comfortable by using the idioms of the language only. You should be able to extend and compose smart table code as you would do for any regular function or objects: #[em this is Javascript !]
+    p This section aims at giving you an hint on how smart table fits in several well known composition mechanisms.
+    div.framed.method-container
+        +left-container()
+            h2 Composition
+        p In this example we will take the #[a(href='') table directive factory] to create a new factory with more capabilities.
+        p An important part of Oriented Object Programming is #[em encapsulation] (the ability to "hide" instance private data). On the other hand, we will probably want some data such the table state and the data set to be shared across different behaviors so we can build more sophisticated structures.
+        p This example will share references to critical data among smart table extensions while hiding it to the outside world (thanks to a closure)
+        +code('compose.js')
+    div.framed.method-container
+        +left-container()
+            h2 Mixin
+        p Here, we will borrow some object behaviors to replace the default ones provided by the core directive.
+        +code('mixin.js')
+    div.framed.method-container
+        +left-container()
+            h2 Decoration
+        p This example will simply add operations (or "advices") like logging function calls around common table functions.
+        +code('decorator.js')
+    div.framed.method-container
+        +left-container()
+            h2 Adapters
+        p This example use the low level smart table API to define a new API perhaps more familiar or friendlier to your habits (using promises instead of events for example).
+        p There are different ways of doing it:
+        ol
+            li You can discard totally the built in event system and use the #[code eval] method but you'll have to manage table state mutation yourself
+            li You can use event system to create new methods (or overwrite core ones)
+        +code('adapters.js')
+    div.framed.method-container
+        +left-container()
+            h2 Extension directives
+        p The table directive factory proposes a contract to avoid the repetition of the code related to the composition mechanism. You can pass has many factories you want: they will have to return an extension to be merged with the core table and will receive as arguments #[strong references] to the #[code data] collection, the #[code tableState] and the core table instance.
+        +code('factories.js')
+    div.framed.method-container
+        +left-container()
+            h2 Example wit existing plugins
+        p There are already a handful of community extensions you can refer to in order to get more examples
+        ul
+            li
+                a(href='') smart-table-crud
+            li
+                a(href='') smart-table-perf
+            li
+                a(href='') smart-table-virtualizer
+
+

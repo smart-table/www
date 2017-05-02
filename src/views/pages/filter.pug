@@ -1,44 +1,50 @@
 extends ../layout/main
 include ../mixins/helper
+include ../mixins/code
+include ../mixins/layout
 
 block content
     h1 Documentation - Filter directive
     p Create a filter directive to conveniently interact with the filter capabilities of your smart table instance
+    +code('filter.js')
     a(href='') See in CodePen
-    +left-container()
-        h2#factory Factory
-    h3 Arguments
-    p The factory takes as argument an options object with the following properties
-    dl
-        dt.mandatory table
-        dd An instance of smart table
-        dt.mandatory pointer
-        dd A pointer string which refers to the item property to filter
-        dt operator
-        dd
-            | The filter operator. It can be
-            ul
-                li includes: check whether a string contains a substring (default)
-                li is: strict equality ( === )
-                li isNot: negation of "is" (!==)
-                li lt: lower than (<)
-                li gte: greater than or equal to (>=)
-                li gt: greater than (>)
-                li lte: lower than or equal to (<=)
-                li equals: loose equality (==)
-                li notEqualS: negation of "equals" (!=)
-            | and defaults to "includes"
-        dt type
-        dd The expected type of the filtered property (boolean, number, date or string). It defaults to "string"
-    h2#api Instance API
-    p Your directive will have the following API
-    h3 .filter
-    p Will filter the data based on the directive configuration and the input string
-    h4 Arguments
-    dt input
-    dd The input string
-    h3 .onFilterChange
-    p Will register an event listener to the #[code FILTER_CHANGED] event (which triggers whenever the filter part of the table state changes)
-    h4 Arguments
-    dt listener
-    dd A function whose unique argument will be the current filter part of the table state.
+    section
+        +left-container()
+            h2#factory Factory
+        +method('Arguments')
+            p The factory takes as argument an options object with the following properties
+            dl
+                dt.mandatory table
+                dd An instance of smart table
+                dt.mandatory pointer
+                dd A pointer string which refers to the item property to filter
+                dt operator
+                dd
+                    | The filter operator. It can be
+                    ul
+                        li includes: check whether a string contains a substring (default)
+                        li is: strict equality ( === )
+                        li isNot: negation of "is" (!==)
+                        li lt: lower than (<)
+                        li gte: greater than or equal to (>=)
+                        li gt: greater than (>)
+                        li lte: lower than or equal to (<=)
+                        li equals: loose equality (==)
+                        li notEqualS: negation of "equals" (!=)
+                    | and defaults to "includes"
+                dt type
+                dd The expected type of the filtered property (boolean, number, date or string). It defaults to "string"
+    section
+        +left-container()
+            h2#api Instance API
+        p Your directive will have the following API
+        +method('.filter')
+            p Will filter the data based on the directive configuration and the input string
+            h4 Arguments
+            dt input
+            dd The input string
+        +method('onFilterChange')
+            p Will register an event listener to the #[code FILTER_CHANGED] event (which triggers whenever the filter part of the table state changes)
+            h4 Arguments
+            dt listener
+            dd A function whose unique argument will be the current filter part of the table state.

@@ -1,31 +1,10 @@
 extends ../layout/main
+include ../mixins/code
 
 block content
     h1 Documentation - Getting started
-    p Smart table is a set of #[em directives] providing an API specific to a group of operations that will change a part of the internal table state and spread the change through events. The main directive is the #[em table directive] and is somehow the brain of the system to whom all other directives will report. You can check the directive documentation pages for more info and we therefore recommend you to start with the table directive.
+    p Smart table is a set of #[em directives] providing an API specific to a group of operations that will change a part of the internal table state and spread the change through events a bit like #[a(href="") Redux]. The main directive is the #[em table directive] and is somehow the brain of the system to whom all other directives will report. You can check the directive documentation pages for more info and we therefore recommend you to start with the table directive.
     h2 Installation
-    p You can install smart-table-core via its #[a(href="") npm package] running the command #[code npm install --save smart-table-core]. Then use one of the distribution files. They are packaged as #[a(href="") UMD] so they should work in any environment (browsers, nodejs, etc). Even better you can use the es6 module to bundle/package your application the way you want.
-    pre
-        code.
-            import {default as smartTable} from 'smart-table-core';
-
-            // your data
-            const data = [
-              {surname:'Deubaze',name:'Raymond'},
-              {surname:'Foo', name:'Bar'},
-              {surname:'Doe',name:'John'}
-            ];
-
-            //you have now a smart collection !
-            const smartCollection = smartTable({data});
-
-            //print data anytime the state change
-            smartCollection.onDisplayChange((items)=>{
-              console.table(items.map(item=>item.value));
-            })
-
-            //sort for example
-            smartCollection.sort({pointer:'name',direction:'desc'});
-
-            // > the sorted data should be printed in the console.
+    p You can install smart-table-core via its #[a(href="") npm package] running the command #[code npm install --save smart-table-core]. Then use one of the distribution files. They are packaged as #[a(href="") UMD] so they should work in any environment (browsers, nodejs, etc). Even better you can use the es6 module together with a module bundler such #[a(href='') rollup] to bundle/package your application the way you want.
+    +code('getting-started.js')
     p Checkout the #[a(href="") CodePen]() for a live example

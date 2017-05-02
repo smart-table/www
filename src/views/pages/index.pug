@@ -8,21 +8,20 @@ include ../svg/tree
 include ../svg/github
 include ../svg/leaf
 include ../svg/make-group
+include ../svg/logo
 include ../mixins/helper
 
 block content
     div.punchline
-        img(src='', aria-hidden='true', alt='smart table logo')
+        +logo()
         div.punchline-description
-            +center-container()
-                h1 Smart Table
+            h1 Smart Table
             p Transforms any dumb Javascript data array into a #[strong smart] collection you can #[em search], #[em filter], #[em sort], #[em paginate].
             p It turns out to be very nice to build #[strong table] and #[strong grid] user interface components, but not only.
-            +center-container()
-                a.github(href='#')
-                    span(aria-hidden='true')
-                        +github(true)
-                    span View on Github
+            a.github(href='#')
+                span(aria-hidden='true')
+                    +github(true)
+                span View on Github
     section
         +center-container()
             h2#features Features
@@ -74,7 +73,7 @@ block content
             div.feature-description
                 +right-container()
                     h3 Paginate
-                p Often, you will not want to display thousands of items to your users. Smart table provide a flexible way to accommodate your user by providing a #[em slice] API to choose which data page to display and its size.
+                p Often, you will not want to display thousands of items to your users. Smart table provides a flexible way to accommodate your user by providing a #[em slice] API to choose which data page to display and its size.
         div.feature-container.framed
             div.feature-description
                 h3 Full text search

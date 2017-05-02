@@ -1,48 +1,51 @@
 extends ../layout/main
 include ../mixins/helper
+include ../mixins/code
+include ../mixins/layout
 
 block content
     h1 Documentation - Slice directive
     p Create a directive to conveniently interact with the slice capabilities of smart table. Useful to implement a pagination logic
+    +code('slice.js')
     a(href='') See in CodePen.
     +left-container()
         h2#factory Factory
-    h3 Arguments
-    p The factory takes as argument an options object with the following properties
-    dl
-        dt.mandatory table
-        dd A reference to a smart table instance.
+    +method('Arguments')
+        p The factory takes as argument an options object with the following properties
+        dl
+            dt.mandatory table
+            dd A reference to a smart table instance.
     +left-container()
         h2#api Instance API
-    h3 .selectPage
-    p Allows you to select a page with the current smart table configuration (ie given a particular page size)
-    h4 Arguments
-    dl
-        dt page
-        dd The index of the requested page (starts at 1)
-    h3 .selectNextPage
-    p Select the next page
-    h3 .selectPreviousPage
-    p Select the previous page
-    h3 .changePageSize
-    p Change the configured page size
-    h4 Arguments
-    dl
-        dt size
-        dd The number of item to display by page.
-    h3 .isPreviousPageEnabled
-    p Tells you whether there is a previous page.
-    h4 Returned value
-    p A boolean with the value true if there is any previous page.
-    h3 .isNextPageEnabled
-    p Tells you whether there is a next page
-    h4 Returned value
-    p A boolean with the value true if there is a next page.
-    h3 .onSummaryChange
-    p see #[a(href='./summary.html') summary directive] for more details
-    h3 .onPageChange
-    p Registers an event listener to the #[code PAGE_CHANGED] event
-    h4 Arguments
-    dl
-        dt listener
-        dd A function which takes as unique argument the slice part of the table state.
+    +method('.selectPage')
+        p Allows you to select a page with the current smart table configuration (ie given a particular page size)
+        h4 Arguments
+        dl
+            dt page
+            dd The index of the requested page (starts at 1)
+    +method('.selectNextPage')
+        p Select the next page
+    +method('.selectPreviousPage')
+        p Select the previous page
+    +method('.changePageSize')
+        p Change the configured page size
+        h4 Arguments
+        dl
+            dt size
+            dd The number of item to display by page.
+    +method('.isPreviousPageEnabled')
+        p Tells you whether there is a previous page.
+        h4 Returned value
+        p A boolean with the value true if there is any previous page.
+    +method('.isNextPageEnabled')
+        p Tells you whether there is a next page
+        h4 Returned value
+        p A boolean with the value true if there is a next page.
+    +method('onSummaryChange')
+        p see #[a(href='./summary.html') summary directive] for more details
+    +method('onPageChange')
+        p Registers an event listener to the #[code PAGE_CHANGED] event
+        h4 Arguments
+        dl
+            dt listener
+            dd A function which takes as unique argument the slice part of the table state.

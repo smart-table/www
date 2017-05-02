@@ -1,4 +1,4 @@
-import {default as smartTable, sort} from 'smart-table-core';
+import {default as smartTable, search} from 'smart-table-core';
 
 const data = [
   {surname: 'Deubaze', name: 'Raymond'},
@@ -7,13 +7,11 @@ const data = [
 ];
 
 const smartCollection = smartTable({data});
-
 smartCollection.onDisplayChange((items) => {
   console.log(items.map(item => item.value));
 });
 
-//create a directive bound to surname
-const directive = sort({table: smartCollection, pointer: 'surname'});
+//create a directive bound to a search configuration
+const directive = search({table: smartCollection, scope: ['surname', 'name']});
 
-//sort by surname column (ascending direction first)
-directive.toggle();
+directive.search('Bar');

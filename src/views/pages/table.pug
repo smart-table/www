@@ -1,96 +1,90 @@
 extends ../layout/main
 include ../mixins/helper
+include ../mixins/layout
 
 block content
     +center-container()
         h1 Documentation - Table directive
     p The table directive is the main directive and is required to create the other directives.
-    h2#factory Factory
-    p To instantiate a smart table you can use its factory.
-    h3 Arguments
-    p The first argument is an options object with the following properties:
-    dl
-        dt.mandatory data
-        dd A Javascript Array with your data.
-        dt tableState
-        dd
-            | An Object with the initial #[a(href="") table state]. It defaults to
-            pre
-                code.
-                    {sort: {}, slice: {page: 1}, filter: {}, search: {}}
-        dt sortFactory
-        dd The factory which will turns the sort state into the sort function. It defaults to #[a(href='') smart-table-sort]
-        dt filterFactory
-        dd The factory which will turns the filter state into the filter function. It defaults to #[a(href='') smart-table-filter]
-        dt searchFactory
-        dd The factory which will turns the search state into the search function. It defaults to #[a(href='') smart-table-search]
-    p You can then add any number of directive extensions. See #[a(href='') extend smart table] for more details
-
-    +left-container()
-        h2 Instance API
-    article.framed.method-container
-        h3#sort .sort
-        p This method will change the sort part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) sort directive]
-        h4 Arguments
-        p An object with the following properties
-        dl
-            dt.mandatory pointer
-            dd The pointer string which refers to the sorted property
-            dt direction
-            dd A string with the sort direction. Allowed values are #[code 'asc'], #[code 'desc'], #[code 'none']. If value is omitted it will be equivalent to #[code 'none']
-        p See #[a(href='') smart-table-sort] for more details.
-    article.framed.method-container
-        h3#filter .filter
-        p This method will change the filter part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) filter directive]
-        h4 Arguments
-        p An object whose keys are pointer to data properties and whose values are filter clauses. Refer to #[a(href='') smart-table-filter] for more details.
-    article.framed.method-container
-        h3#search .search
-        p This method will change the search part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) search directive]
-        h4 Arguments
-        p An object with the following properties
-        dl
-            dt.mandatory scope
-            dd An array with string pointers referencing properties you want to include in the text search
-            dt value
-            dd A string with the input value you want to search for
-        p See #[a(href='') smart-table-search] for more details.
-    article.framed.method-container
-        h3#slice .slice
-        p This method will change the slice part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) slice directive]
-        h4 Arguments
-        p An object with the following properties
-        dl
-            dt page
-            dd An integer referencing the index of page you want to display. The first page starts at 1
-            dt size
-            dd An integer with the number of item per page you want to display. If this value is omitted the whole data set will be considered as a single page.
-    article.framed.method-container
-        h3#exec .exec
-        p All the methods above which mutate the table state will have as side effect to call this method. This method updates the displayed data accordingly to the current table state and will notify the system of changes through events.
-        p You can call this method manually after you have registered event listeners so they are aware of the latest table state/displayed data.
-        h4 Arguments
-        p An object with following property
-        dl
-            dt processingDelay
-            dd As the calculation of the displayed data may be long, the calculation is delayed a little bit to allow the system to notify the other parts that eventually a long process is going to take place. The default value is 20(ms)
-    article.framed.method-container
-        h3#eval .eval
-        p This method lets you calculate the displayed data without having any side effects. It is useful when you want to use the smart table as a data source
-        h4 Arguments
-        p Takes a #[a(href='') table state] as argument and defaults to the actual table state
-        h4 returned value
-        p It returns a Promise which will eventually resolve with a data array whose items have the following structure:
-        dl
-            dt index
-            dd The index of the item in the data source collection
-            dt value
-            dd The item
-    article.framed.method-container
-        h3#getTableState .getTableState
-        p It returns a deep #[em copy] of the current table state
-    article.framed.method-container
-        h3#onDisplayChange .onDisplayChange
-        p it is a convenient method to register an event listener to the #[code DISPLAY_CHANGED] event.
-        h4 Arguments
-        p Takes a function whose only argument will be an array with the new displayed collection. Every item will have the same structure as in #[a(href='#eval') .eval method]
+    section
+        h2#factory Factory
+        p To instantiate a smart table you can use its factory.
+        +method('Arguments')
+            p The first argument is an options object with the following properties:
+            dl
+                dt.mandatory data
+                dd A Javascript Array with your data.
+                dt tableState
+                dd
+                    | An Object with the initial #[a(href="") table state]. It defaults to
+                    pre
+                        code.
+                            {sort: {}, slice: {page: 1}, filter: {}, search: {}}
+                dt sortFactory
+                dd The factory which will turns the sort state into the sort function. It defaults to #[a(href='') smart-table-sort]
+                dt filterFactory
+                dd The factory which will turns the filter state into the filter function. It defaults to #[a(href='') smart-table-filter]
+                dt searchFactory
+                dd The factory which will turns the search state into the search function. It defaults to #[a(href='') smart-table-search]
+            p You can then add any number of directive extensions. See #[a(href='') extend smart table] for more details
+    section
+        +left-container()
+            h2 Instance API
+        +method('.sort')
+            p This method will change the sort part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) sort directive]
+            h4 Arguments
+            p An object with the following properties
+            dl
+                dt.mandatory pointer
+                dd The pointer string which refers to the sorted property
+                dt direction
+                dd A string with the sort direction. Allowed values are #[code 'asc'], #[code 'desc'], #[code 'none']. If value is omitted it will be equivalent to #[code 'none']
+            p See #[a(href='') smart-table-sort] for more details.
+        +method('.filter')
+            p This method will change the filter part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) filter directive]
+            h4 Arguments
+            p An object whose keys are pointer to data properties and whose values are filter clauses. Refer to #[a(href='') smart-table-filter] for more details.
+        +method('.search')
+            p This method will change the search part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) search directive]
+            h4 Arguments
+            p An object with the following properties
+            dl
+                dt.mandatory scope
+                dd An array with string pointers referencing properties you want to include in the text search
+                dt value
+                dd A string with the input value you want to search for
+            p See #[a(href='') smart-table-search] for more details.
+        +method('.slice')
+            p This method will change the slice part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) slice directive]
+            h4 Arguments
+            p An object with the following properties
+            dl
+                dt page
+                dd An integer referencing the index of page you want to display. The first page starts at 1
+                dt size
+                dd An integer with the number of item per page you want to display. If this value is omitted the whole data set will be considered as a single page.
+        +method('.exec')
+            p All the methods above which mutate the table state will have as side effect to call this method. This method updates the displayed data accordingly to the current table state and will notify the system of changes through events.
+            p You can call this method manually after you have registered event listeners so they are aware of the latest table state/displayed data.
+            h4 Arguments
+            p An object with following property
+            dl
+                dt processingDelay
+                dd As the calculation of the displayed data may be long, the calculation is delayed a little bit to allow the system to notify the other parts that eventually a long process is going to take place. The default value is 20(ms)
+        +method('.eval')
+            p This method lets you calculate the displayed data without having any side effects. It is useful when you want to use the smart table as a data source
+            h4 Arguments
+            p Takes a #[a(href='') table state] as argument and defaults to the actual table state
+            h4 returned value
+            p It returns a Promise which will eventually resolve with a data array whose items have the following structure:
+            dl
+                dt index
+                dd The index of the item in the data source collection
+                dt value
+                dd The item
+        +method('.getTableState')
+            p It returns a deep #[em copy] of the current table state
+        +method('.onDisplayChange')
+            p it is a convenient method to register an event listener to the #[code DISPLAY_CHANGED] event.
+            h4 Arguments
+            p Takes a function whose only argument will be an array with the new displayed collection. Every item will have the same structure as in #[a(href='#eval') .eval method]

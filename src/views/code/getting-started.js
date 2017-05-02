@@ -1,4 +1,4 @@
-const smartTable = require('smart-table-core')['default'];
+import {default as smartTable} from 'smart-table-core';
 
 // your data
 const data = [

@@ -5,6 +5,7 @@ html(lang='en')
         title #{title}
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(href='../src/css/theme.css', rel='stylesheet')
+        link(href='../node_modules/prismjs/themes/prism-tomorrow.css', rel='stylesheet')
     body
         a(href="#main") Skip to content
         include header
@@ -12,6 +13,6 @@ html(lang='en')
             block content
         include footer
     script.
-        for (let f of [...document.querySelectorAll('.framed')]){
-            f.style.setProperty('--edgeLength',Math.floor(Math.random()*100)+'%');
-        }
+      for (let f of [...document.querySelectorAll('.framed')]){
+        f.style.setProperty('--edgeLength', Math.floor(Math.random() * 100) + '%');
+      }

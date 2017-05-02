@@ -1,0 +1,81 @@
+extends ../layout/main
+include  ../mixins/helper
+include  ../mixins/code
+include  ../mixins/layout
+
+block content
+    +center-container()
+        h1 Documentation - Vuejs binding
+    p Following the project philosophy the #[a(href='https://github.com/smart-table/smart-table-vue') binding] for #[a(href='http://vuejs.org/') Vuejs] tries to be as #[strong declarative] as possible and use #[a(href='http://vuejs.org/v2/guide/mixins.html#ad') mixins] to add programmatic behavior to your component so you can focus on the template part only.
+    p See the example #[a(href="https://codepen.io/lorenzofox3/pen/GmEvLO?editors=1010") CodePen]. A more complete example should be available on #[a(href='https://github.com/smart-table/smart-table-vue') the project repository].
+    h2 Usage
+    p The mixins will be built around the #[em directives] shown in the documentation part of this website with the following conventions:
+    ul
+        li The directive instance will be available on your component as #[code this.stDirective].
+        li All the directive methods will be bound to the component so if the directive exposes a #[code toggle] method, the component will do as well.
+        li The part of the table state relevant to the directive will be watched and available on your component as #[code this.stState].
+        li When the directive needs some configuration, you should be able to pass the data through attributes as explained in the following detailed documentation. Most of them will require the instance of your smart table as the #[code smart-table] attribute
+    +method('Table mixin')
+        p This mixin should help you to create the root component. It will expose the currently displayed collection as the #[code displayed] property.
+        p The only (and mandatory) configuration attribute will be the instance of your smart table
+        +code('vue-table.js')
+    +method('Sort mixin')
+        p This mixin will help you to use the sort directive.
+        h4 Configurations attributes
+        dl
+            dt.mandatory smart-table
+            dd The instance of smart table
+            dt st-sort
+            dd The pointer to the sort property
+            dt st-sort-cycle
+            dd Whether the toggle will cycle through the 3 sort states or simply pass from ascending sort to descending sort only (default to false)
+        h4 Example
+        p Here is an example of sortable header which will toggle the sort state when clicked and will change its class name based on the current sort state
+        +code('vue-sort.js')
+    +method('Search mixin')
+        p This mixin will help you to use the search directive.
+        h4 Configuration attributes
+        dl
+            dt.mandatory smart-table
+            dd The instance of smart table
+            dt st-search-scope
+            dd An array of pointers which will define the search scope
+        h4 Example
+        p An example of a search input which will trigger a search whenever the input value changes
+        +code('vue-search.js')
+    +method('Filter mixin')
+        p This mixin will help you to use the filter directive
+        h4 Configuration attributes
+        dl
+            dt.mandatory smart-table
+            dd The instance of smart-table
+            dt.mandatory st-filter
+            dd The pointer to the filtered property
+            dt st-filter-type
+            dd The type of the property (defaults to string)
+            dt st-filter-operator
+            dd The operator of the filter clause (defaults to "includes")
+        h4 Example
+        p An example of a filter input component which will trigger a filter query whenever the input value changes
+        +code('vue-filter.js')
+    +method('Pagination mixin')
+        p This mixin will help you to use the slice directive
+        h4 Configuration attributes
+        dl
+            dt.mandatory smart-table
+            dd The instance of smart-table
+        h4 Example
+        p This example provides a basic pagination component displaying the current page and which allows to go the previous or the next page
+        +code('vue-pagination.js')
+    +method('Loading indicator mixin')
+        p This mixin will help you tu use the loading indicator directive
+        h4 Configuration attributes
+        dl
+            dt.mandatory smart-table
+            dd The instance of smart-table
+        h4 Example
+        p This example will change the class name of a loading indicator overlay depending on the current processing state of the component
+        +code('vue-indicator.js')
+
+
+

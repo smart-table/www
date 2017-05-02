@@ -1,25 +1,28 @@
 extends ../layout/main
 include ../mixins/helper
+include ../mixins/code
+include ../mixins/layout
 
 block content
     h1 Documentation - Working Indicator directive
     p As the calculation of the new displayed list may be long, smart table will notify the current processing state (whether the calculation is taking place). This directive allows you to listen to changes in the processing state
+    +code('working-indicator.js')
     a(href='') See in CodePen
     +left-container()
         h2#factory Factory
-    h3 Arguments
-    p The factory takes as argument an options object with the following properties
-    dl
-        dt.mandatory table
-        dd An instance of smart table
+    +method('Arguments')
+        p The factory takes as argument an options object with the following properties
+        dl
+            dt.mandatory table
+            dd An instance of smart table
     +left-container()
         h2#api Instance API
-    h3 .onExecutionChange
-    p Register an event listener to the #[code EXEC_CHANGED] event (triggered whenever the processing state changes)
-    h4 Arguments
-    dl
-        dt listener
-        dd A function whose unique argument will be an object with the structure #[code {working:true}] where the values of the working property tells whether the table is processing or not.
+    +method('.onExecutionChange')
+        p Register an event listener to the #[code EXEC_CHANGED] event (triggered whenever the processing state changes)
+        h4 Arguments
+        dl
+            dt listener
+            dd A function whose unique argument will be an object with the structure #[code {working:true}] where the values of the working property tells whether the table is processing or not.
 
 
 

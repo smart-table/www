@@ -1,12 +1,17 @@
 include ../svg/books
 include ../svg/stack
+include ../svg/logo
 include ../svg/video-camera
+include ../svg/book
 
 header(role="banner")
     nav
         ul
             li
-                a(href='./') Home
+                a(href='./').logo
+                    span(aria-hidden='true')
+                        +logo(true)
+                    span.visually-hidden Home
             li
                 a(href='#documentation-menu', role='button', aria-haspopup='true', aria-controls='documentation-menu')
                     span(aria-hidden='true')
@@ -22,33 +27,55 @@ header(role="banner")
                     span(aria-hidden='true')
                         +video-camera(true)
                     span Demo
-        ul#documentation-menu(role='menu')
-            li(role='menuitem')
-                a(href="./getting-started.html") Getting started
-            li(role='menuitem')
-                a(href="./table-state.html") Table state
-            li(role='menuitem')
-                a(href='./extend.html') Extend smart table
-            li(role='menuitem')
-                a(href="./table.html") Table directive
-            li(role='menuitem')
-                a(href="./sort.html") Sort directive
-            li(role='menuitem')
-                a(href="./filter.html") Filter directive
-            li(role='menuitem')
-                a(href="./search.html") Search directive
-            li(role='menuitem')
-                a(href="./working-indicator.html") Working Indicator directive
-            li(role='menuitem')
-                a(href="./summary.html") Summary directive
-            li(role='menuitem')
-                a(href="./slice.html") Slice directive
-        ul#integration-menu(role='menu')
-            li(role='menuitem')
-                a(href="#") Vanilla js
-            li(role='menuitem')
-                a(href="#") React/Preact
-            li(role='menuitem')
-                a(href="#") Vue
-            li(role='menuitem')
-                a(href="#") Flaco
+        div#documentation-menu(role='menu')
+            ul
+                li(role='menuitem')
+                    a(href="./getting-started.html")
+                        span Getting started
+                li(role='menuitem')
+                    a(href="./table-state.html")
+                        span Table state
+                li(role='menuitem')
+                    a(href="./table.html")
+                        span Table directive
+            div(role='separator')
+                div
+            ul
+                li(role='menuitem')
+                    a(href="./sort.html")
+                        span Sort directive
+                li(role='menuitem')
+                    a(href="./filter.html")
+                        span Filter directive
+                li(role='menuitem')
+                    a(href="./search.html")
+                        span Search directive
+                li(role='menuitem')
+                    a(href="./working-indicator.html")
+                        span Working Indicator directive
+                li(role='menuitem')
+                    a(href="./summary.html")
+                        span Summary directive
+                li(role='menuitem')
+                    a(href="./slice.html")
+                        span Slice directive
+            div(role='separator')
+                div
+            ul
+                li(role='menuitem')
+                    a(href='./extend.html')
+                        span Extend smart table
+        div#integration-menu(role='menu')
+            ul
+                li(role='menuitem')
+                    a(href="#")
+                        span Vanilla js
+                li(role='menuitem')
+                    a(href="#")
+                        span React/Preact
+                li(role='menuitem')
+                    a(href="./vuejs.html")
+                        span Vue
+                li(role='menuitem')
+                    a(href="#")
+                        span Flaco

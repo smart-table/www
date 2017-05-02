@@ -4,14 +4,13 @@ html {
 }
 
 :root {
-    --primaryColor: #ff6300;
+    --primaryColor: #ff6c00;
     --fontColor: #173f46;
     --backgroundColor: #fbfbfb;
     --secondaryColor: #0097f3;
 }
 
 body {
-    font-size: calc(1em + 0.2vw);
     background: var(--backgroundColor);
     color: var(--fontColor);
     box-sizing: border-box;
@@ -63,7 +62,7 @@ h3 {
 }
 
 p {
-    margin: 1.2rem 0;
+    margin: 0.9rem 0;
     line-height: 1.5;
 }
 
@@ -88,28 +87,63 @@ h1 {
     border: 0;
 }
 
-nav > ul {
+nav > ul:first-child {
     display: flex;
     margin: 0;
-    padding: 0;
+    padding: 0 1em;
     align-items: stretch;
-    justify-content: space-around;
+    border-bottom: 2px solid var(--primaryColor);
+    justify-content: space-between;
     list-style: none;
     flex-wrap: wrap;
+    box-shadow: 0 2px 4px 0 #a4a4a4;
+}
+
+[role=separator] {
+    padding: 1em 0;
+}
+
+[role=separator] div {
+    border-top: 1px solid var(--primaryColor);
+    border-left: 1px solid var(--primaryColor);
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+
+[role='menu'] {
+    display: flex;
+    font-size: 0.9rem;
+    color: #12474e;
+    border-bottom: 1px solid var(--primaryColor);
+    justify-content: center;
+    box-shadow: 0 1px 2px 0 #b3b3b3;
+}
+
+[role='menu'] ul {
+    margin: 0;
+    padding: 1em 0;
+}
+
+[role='menu']:not(:target) {
+    display: none;
 }
 
 nav li {
-    display: inline-flex;
+    display: flex;
+    align-items: center;
 }
 
 nav a {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     padding: 1em 2em;
     text-decoration: none;
-    transition: background 0.4s, color 0.4s;
-    position: relative;
     width: 100%;
+}
+
+nav a > span:last-child {
+    position: relative;
 }
 
 nav a:hover, nav a:focus {
@@ -118,7 +152,7 @@ nav a:hover, nav a:focus {
     outline: none;
 }
 
-nav a:after {
+nav a > span:last-child:after {
     display: inline-block;
     position: absolute;
     height: 2px;
@@ -126,33 +160,14 @@ nav a:after {
     content: '';
     left: 50%;
     right: 50%;
-    bottom: 0.8em;
+    bottom: -0.5em;
 }
 
-nav a:focus:after,
-nav a:hover:after {
-    left: 2em;
-    right: 2em;
+nav a:not(.logo):focus > span:last-child:after,
+nav a:not(.logo):hover > span:last-child:after {
+    left: 0;
+    right: 0;
     transition: left 0.4s, right 0.4s;
-}
-
-[role=menuitem] {
-    flex-grow: 1;
-    flex-basis: 25%;
-    text-align: center;
-}
-
-[role='menu'] {
-    font-size: 0.9rem;
-    color: #12474e;
-    flex-wrap: wrap;
-    border-top: 2px solid var(--primaryColor);
-    border-bottom: 1px solid var(--primaryColor);
-    box-shadow: 0 2px 4px 0px #b3b3b3;
-}
-
-[role='menu']:not(:target) {
-    display: none;
 }
 
 .feature-container, .punchline {
@@ -161,6 +176,10 @@ nav a:hover:after {
     flex-wrap: wrap;
     padding: 0.8em;
     min-height: 15em;
+}
+
+.punchline .svg-container:first-child {
+    align-self: flex-start;
 }
 
 .feature-container {
@@ -175,11 +194,12 @@ nav a:hover:after {
 }
 
 .method-container {
-    padding: 2em;
+    padding: 0.5em 1em;
 }
 
 .punchline {
     font-size: 1.1rem;
+    margin-top: 2em;
     justify-content: space-between;
     background-color: var(--fontColor);
     background-image: linear-gradient(135deg, var(--backgroundColor), var(--backgroundColor) 35%, transparent 35%),
@@ -208,7 +228,7 @@ a.github {
     border-radius: 4px;
     text-decoration: none;
     text-shadow: 1px 1px black;
-    display: inline-flex;
+    display: flex;
     align-items: center;
 }
 
@@ -220,6 +240,9 @@ a.github {
     flex-basis: 66%;
     color: var(--backgroundColor);
     padding: 1.5em 3em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .framed {
@@ -326,13 +349,30 @@ h4 {
 }
 
 @media (max-width: 780px) {
-    body {
+    main {
         padding: 0.3em;
+        margin-top:0;
     }
 
     .feature-container, .punchline, nav > ul, #main-footer {
         flex-direction: column;
         align-content: stretch;
+    }
+
+    nav > ul:first-child {
+        padding: 0;
+    }
+
+    [role='menu'] {
+        flex-direction: column;
+    }
+
+    .method-container {
+        padding: 0.5em;
+    }
+
+    [role=separator] {
+        padding: 0.5em;
     }
 
     #main-footer {
@@ -341,6 +381,7 @@ h4 {
 
     .punchline {
         background-image: none;
+        margin:0;
     }
 
     .feature-container:nth-child(2n) {
@@ -352,12 +393,20 @@ h4 {
         background-image: linear-gradient(225deg, var(--backgroundColor), var(--backgroundColor) 1.5rem, transparent 1.5rem);
     }
 
+    .punchline .svg-container:first-child {
+        align-self: center;
+    }
+
     .punchline-description {
         padding: 0;
     }
 
     .right-container {
         text-align: left;
+    }
+
+    dd {
+        margin-left: 1em;
     }
 
     .feature-container .svg-container svg {
