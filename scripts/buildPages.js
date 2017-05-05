@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const prism = require('prismjs');
 const codeRoot = path.join(process.cwd(), './src/views/code/');
+const opts = require('./pagesOptions');
 
 const highlighter = {
   loadContent(file){
@@ -60,6 +61,6 @@ const pages = fs.readdirSync(path.join(process.cwd(), '/src/views/pages'));
 for (let page of pages) {
   const [name, extension] = page.split('.');
   const stream = fs.createWriteStream(path.join(process.cwd(), `/dist/${name}.html`));
-  const html = pug.renderFile(path.join(process.cwd(), `/src/views/pages/${page}`), {highlight: highlight(codeRoot)});
+  const html = pug.renderFile(path.join(process.cwd(), `/src/views/pages/${page}`), Object.assign({highlight: highlight(codeRoot)}, opts[name] || {}));
   stream.write(html);
 }

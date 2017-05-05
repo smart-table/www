@@ -2,13 +2,13 @@ extends ../layout/main
 
 block content
     h1#demo A table component built with Smart table
-    p This is an "advanced" example of a table component using smart-table and other libraries.
+    p This is an #[em advanced] example of a table component using smart-table and other libraries.
     h2 Data
     p The data set is made of #[strong 25000 items].
     p Some properties are #[em nested] and have different types (String, Number, Date, Enum).
-    p The degree of entropy varies from one property to the other: the most "chaotic" property being the date of birth.
+    p The degree of entropy varies from one property to the other: the most #[em chaotic] property being the date of birth.
     h2 Template
-    p Some cells have "elaborated" templates
+    p Some cells have #[ em elaborated] templates
     ul
         li Cells are editable when activated (click or by keyboard)
         li Gender cells change color depending on the value
@@ -41,16 +41,18 @@ block content
         li Only one cell will be in the TAB sequence as any composite widget
         li You can navigate from one cell to the other using the arrow keys
         li If a cell has sub widgets which do not need arrow keys they will be focused instead of the cell (like the headers)
-        li Otherwise you will need to "activate the cell" by pressing #[kbd Enter], afterward the key strokes will be "trapped" in the sub widget except #[kbd Escape] which will turn back to the cell navigation mode. For example, every data cell is editable.
+        li Otherwise you will need to #[em activate the cell] by pressing #[kbd Enter], afterward the key strokes will be #[em trapped] in the sub widget except #[kbd Escape] which will turn back to the cell navigation mode. For example, every data cell is editable.
     h2 Pagination
     p The footer contains a summary of the data set, buttons to navigate from one page to the other and a select input to change the page size
     h2 Bundle
-    p The whole bundle weights #[strong 10kb], difficult to beat ! If you can I buy you a mojito next time you visit Cuba. It is made of
+    p The whole (unoptimized) bundle weights #[strong less than 9kb] including the view framework ... difficult to beat ! If you can, I'll buy you a mojito next time you visit Cuba. It is made of
     ul
-        li #[a(href='#') Flaco] a whole view library which is itself very lightweight indeed. (not specific to smart table)
-        li #[a(href='#') smart-table-core] library
-        li #[a(href='#') smart-table-crud] extension module for the Remove/Edit features
-        li #[a(href='#') smart-table-keyboard] module for the keyboard navigation following the #[a(href='') grid pattern] (not specific to smart-table)
-        li Some code to glue everything together. Note some of it consists in turning smart table into a #[a(href="") Redux] store and could worth its own module
+        li #[a(href='https://github.com/smart-table/flaco') Flaco] a whole view library which is itself very lightweight indeed. (not specific to smart table)
+        li #[a(href='https://github.com/smart-table/smart-table-core') smart-table-core] library
+        li #[a(href='https://github.com/smart-table/smart-table-crud') smart-table-crud] extension module for the Remove/Edit features
+        li #[a(href='https://github.com/smart-table/smart-table-keyboard') smart-table-keyboard] module for the keyboard navigation following the #[a(href='') grid pattern] (not specific to smart-table)
+        li Some code to glue everything together. Note some of it consists in turning smart table into a #[a(href="https://github.com/reactjs/redux") Redux] store and could worth its own module
+    h2 Live example
+    div#demo-container
 
 

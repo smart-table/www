@@ -1,0 +1,36 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="192" height="77" viewBox="0 0 192 77">
+    <title>smart-table-icon</title>
+    <rect width="30" height="10" stroke-width="2" fill="#ff6300" x="1" y="1"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="41" y="1"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="81" y="1"/>
+    <rect width="30" height="10" stroke-width="2" fill="#ff6300" x="121" y="1"/>
+    <rect width="30" height="10" stroke-width="2" fill="#ff6300" x="161" y="1"/>
+
+    <rect width="30" height="10" stroke-width="2" fill="#ff6c00" x="1" y="16"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="41" y="16"/>
+    <rect width="30" height="10" stroke-width="2" fill="#ff6c00" x="81" y="16"/>
+    <rect width="30" height="10" stroke-width="2" fill="#ff6c00" x="121" y="16"/>
+    <rect width="30" height="10" stroke-width="2" fill="#ff6c00" x="161" y="16"/>
+
+    <rect width="30" height="10" stroke-width="2" fill="#ff7200" x="1" y="31"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="41" y="31"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="81" y="31"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="121" y="31"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="161" y="31"/>
+
+    <rect width="30" height="10" stroke-width="2" fill="#ff7A00" x="1" y="46"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="41" y="46"/>
+    <rect width="30" height="10" stroke-width="2" fill="#ff7A00" x="81" y="46"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="121" y="46"/>
+    <rect width="30" height="10" stroke-width="2" fill="#ff7A00" x="161" y="46"/>
+
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="1" y="61"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="41" y="61"/>
+    <rect width="30" height="10" stroke-width="2" fill="#ff7e00" x="81" y="61"/>
+    <rect width="30" height="10" stroke-width="2" fill="#173f46" x="121" y="61"/>
+    <rect width="30" height="10" stroke-width="2" fill="#ff7e00" x="161" y="61"/>
+
+    <line x1="1" y1="66" x2="71" y2="66" stroke="#173f46" stroke-width="10"/>
+    <line x1="41" y1="6" x2="111" y2="6" stroke="#173f46" stroke-width="10"/>
+    <line x1="81" y1="36" x2="151" y2="36" stroke="#173f46" stroke-width="10"/>
+</svg>

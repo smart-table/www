@@ -18,7 +18,7 @@ block content
             h1 Smart Table
             p Transforms any dumb Javascript data array into a #[strong smart] collection you can #[em search], #[em filter], #[em sort], #[em paginate].
             p It turns out to be very nice to build #[strong table] and #[strong grid] user interface components, but not only.
-            a.github(href='#')
+            a.github(href='https://github.com/smart-table/smart-table-core')
                 span(aria-hidden='true')
                     +github(true)
                 span View on Github
@@ -30,22 +30,22 @@ block content
             div.feature-description
                 +right-container()
                     h3 View agnostic
-                p Smart table only adds some nice behavior to a data collection and does not depend on any specific platform or UI framework. You can make an array become #[em smart] in your browser but also in #[a(href="#") nodejs].
+                p Smart table only adds some nice behavior to a data collection and does not depend on any specific platform or UI framework. You can make an array become #[em smart] in your browser but also in #[a(href="https://nodejs.org/en/") nodejs].
                 p Moreover, as smart table is fully decoupled from any view engine, it is really easy to use with your favourite view library to build cool grid components or any type of smart list components.
                 p Go, and check our bindings for:
                 ul
                     li
-                        a(href="") Vanilla Javascript
+                        a(href="./vanilla.html") Vanilla Javascript
                     li
-                        a(href="") React / Preact
+                        a(href="./react.html") React / Preact
                     li
-                        a(href="#") Vue
+                        a(href="./vuejs.html") Vue
                     li
-                        a(href="") Flaco
+                        a(href="./flaco.html") Flaco
         div.feature-container.framed
             div.feature-description
                 h3 Fast
-                p #[strong Performance] is a top priority so that you can sort or filter your smart collection in less than a second even for #[em big] data set. Check out or #[a(href='#demo') demo table component] which features a data set of #[strong 25000] entries.
+                p #[strong Performance] is a top priority so that you can sort or filter your smart collection in less than a second even for #[em big] data set. Check out or #[a(href='./demo.html') demo table component] which features a data set of #[strong 25000] entries.
             +rocket()
         div.feature-container.framed
             +sort-amount-desc()
@@ -77,7 +77,7 @@ block content
         div.feature-container.framed
             div.feature-description
                 h3 Full text search
-                p Smart table comes with a basic built in full text search API. A bit like #[a(href='') ElasticSearch], we consider full text search a different thing from more sophisticated and specific filtered query. Again if you want something more elaborated (fuzzy search, indexed search, etc), no problem, just use your own or a community's one.
+                p Smart table comes with a basic built in full text search API. A bit like #[a(href='https://www.elastic.co/products/elasticsearch') ElasticSearch], we consider full text search a different thing from more sophisticated and specific filtered query. Again if you want something more elaborated (fuzzy search, indexed search, etc), no problem, just use your own or a community's one.
             +search()
         div.feature-container.framed
             +leaf()
@@ -90,10 +90,10 @@ block content
                 h3 Extensible
                 p Smart table is #[em just] Javascript and gives all the flexibility the language can provide with composition patterns.
                 ul
-                    li You can #[em compose] a table into another one: that is what the #[a(href="") smart-table-crud] plugin does.
-                    li You can #[em decorate] a part of its API: that is what the #[a(href="") smart-table-perf] module does.
+                    li You can #[em compose] a table into another one: that is what the #[a(href='https://github.com/smart-table/smart-table-crud') smart-table-crud] plugin does.
+                    li You can #[em decorate] a part of its API: that is what the #[a(href='https://github.com/smart-table/smart-table-perf') smart-table-perf] module does.
                     li You can #[em mixin] some other behaviour and override the default table. That's how you #[a(href='') move the logic to your server] without changing a single line of code.
-                    li You can use your smart table as a data source: that is what the #[a(href='') smart-table-virtualizer] module does.
+                    li You can use your smart table as a data source: that is what the #[a(href='https://github.com/smart-table/smart-table-virtualizer') smart-table-virtualizer] module does.
                 p Smart table is by design #[strong modular] and you can bring in more features as your project matures without being stuck in a constraining API.
             +tree()
     section

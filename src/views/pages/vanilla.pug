@@ -1,0 +1,62 @@
+extends ../layout/main
+include  ../mixins/helper
+include  ../mixins/code
+include  ../mixins/layout
+
+block content
+    +center-container()
+        h1 Documentation - Vanilla Javascript binding
+    p This binding provides a #[strong declarative] #[a(href='') HTML API] for smart table. You'll be able to link some of your smart table directives to html elements simply by adding html data attributes on html elements. Note that because this binding tries to be as less opinionated as possible, any part of your component which will need a specific template (to display an item or a pagination control for instance) will have to be handled manually. However this binding probably remains the fastest way to link a smart table to a Document Object Model (DOM).
+    p Check the #[a(href='https://codepen.io/lorenzofox3/pen/yboaGQ?editors=1010') basic codepen] for an example or the more advanced example on the #[a(href='https://github.com/smart-table/smart-table-vanilla') binding repository].
+    h2 Usage
+    p Use the grid factory to automatically link flagged elements to directives.
+    p Note you will need to specify yourself how to display data.
+    +code('vanilla-table.pug')
+    p This example does not do much: it simply binds any change in the displayed collection to an update in the DOM. But you will now be able to edit the template to add more features.
+    +method('Sort attributes')
+        p You can add the #[code data-st-sort] attribute to let the table know the related element will be bound to a sort directive.
+        h4 HTML attributes
+        dl
+            dt.mandatory data-st-sort
+            dd The pointer to the sorted property
+            dt data-st-sort-cycle
+            dd If present. The toggle cycle will have three states instead of two: sort ascent -> sort descent -> no sort
+        h4 Bound listeners
+        dl
+            dt click
+            dd when the element is clicked the #[code .toggle()] method will be called on the relative directive and the class name #[code st-sort-asc] or #[code st-sort-desc] will be added.
+        h4 Example
+        +code('vanilla-sort.pug')
+    +method('Search attributes')
+        p By adding the #[code data-st-search] attribute you will bind an input to a search directive
+        dl
+            dt.mandatory data-st-search
+            dd A comma separated list of pointer to include in the search scope
+        h4 Bound listeners
+        dl
+            dt input
+            dd Whenever the input event is fired (with a delay of 400ms) the search will be triggered
+        h4 Example
+        +code('vanilla-search.pug')
+    +method('Filter attributes')
+        p Use the #[code data-st-filter] on an input or select element to add filter capabilities
+        h4 HTML attributes
+        dl
+            dt.mandatory data-st-filter
+            dd The pointer to the filtered property
+            dt data-st-filter-operator
+            dd The filter operator to use (defaults to "includes")
+            dt data-st-filter-type
+            dd The type of the bound property. If not provided it will look for the #[code type] attribute of the input or it will defaults to string
+        h4 Bound listeners
+        dl
+            dt input (or change for select elements)
+            dd Whenever the event is fired (with a delay of 400ms) the filter element will be triggered with the input/select value and the provided configuration
+        h4 Example
+        +code('vanilla-filter.pug')
+    +method('Working state attributes')
+        p will react to the current working state of the smart table (ideal to build loading indicator)
+        h4 HTML attributes
+        dl
+            dt data-st-loading-indicator
+            dd If presents, the element will react to changes in the working state. It will add/remove the #[code st-working] class name accordingly

@@ -16,22 +16,22 @@ block content
                 dd A Javascript Array with your data.
                 dt tableState
                 dd
-                    | An Object with the initial #[a(href="") table state]. It defaults to
+                    | An Object with the initial #[a(href="./table-state") table state]. It defaults to
                     pre
                         code.
                             {sort: {}, slice: {page: 1}, filter: {}, search: {}}
                 dt sortFactory
-                dd The factory which will turns the sort state into the sort function. It defaults to #[a(href='') smart-table-sort]
+                dd The factory which will turns the sort state into the sort function. It defaults to #[a(href='https://github.com/smart-table/smart-table-sort') smart-table-sort]
                 dt filterFactory
-                dd The factory which will turns the filter state into the filter function. It defaults to #[a(href='') smart-table-filter]
+                dd The factory which will turns the filter state into the filter function. It defaults to #[a(href='https://github.com/smart-table/smart-table-filter') smart-table-filter]
                 dt searchFactory
-                dd The factory which will turns the search state into the search function. It defaults to #[a(href='') smart-table-search]
-            p You can then add any number of directive extensions. See #[a(href='') extend smart table] for more details
+                dd The factory which will turns the search state into the search function. It defaults to #[a(href='https://github.com/smart-table/smart-table-search') smart-table-search]
+            p You can then add any number of directive extensions. See #[a(href='./extend.html') extend smart table] for more details
     section
         +left-container()
             h2 Instance API
         +method('.sort')
-            p This method will change the sort part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) sort directive]
+            p This method will change the sort part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href='./sort.html') sort directive]
             h4 Arguments
             p An object with the following properties
             dl
@@ -39,13 +39,13 @@ block content
                 dd The pointer string which refers to the sorted property
                 dt direction
                 dd A string with the sort direction. Allowed values are #[code 'asc'], #[code 'desc'], #[code 'none']. If value is omitted it will be equivalent to #[code 'none']
-            p See #[a(href='') smart-table-sort] for more details.
+            p See #[a(href='https://github.com/smart-table/smart-table-sort') smart-table-sort] for more details.
         +method('.filter')
-            p This method will change the filter part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) filter directive]
+            p This method will change the filter part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href'./filter.html') filter directive]
             h4 Arguments
-            p An object whose keys are pointer to data properties and whose values are filter clauses. Refer to #[a(href='') smart-table-filter] for more details.
+            p An object whose keys are pointer to data properties and whose values are filter clauses. Refer to #[a(href='https://github.com/smart-table/smart-table-filter') smart-table-filter] for more details.
         +method('.search')
-            p This method will change the search part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) search directive]
+            p This method will change the search part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href='./search.html') search directive]
             h4 Arguments
             p An object with the following properties
             dl
@@ -53,9 +53,9 @@ block content
                 dd An array with string pointers referencing properties you want to include in the text search
                 dt value
                 dd A string with the input value you want to search for
-            p See #[a(href='') smart-table-search] for more details.
+            p See #[a(href='https://github.com/smart-table/smart-table-search') smart-table-search] for more details.
         +method('.slice')
-            p This method will change the slice part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href) slice directive]
+            p This method will change the slice part of the table state and will trigger a refresh of the displayed data. It is the low level API if you don't want to use the #[a(href='./slice.html') slice directive]
             h4 Arguments
             p An object with the following properties
             dl
@@ -74,7 +74,7 @@ block content
         +method('.eval')
             p This method lets you calculate the displayed data without having any side effects. It is useful when you want to use the smart table as a data source
             h4 Arguments
-            p Takes a #[a(href='') table state] as argument and defaults to the actual table state
+            p Takes a #[a(href='./table-state.html') table state] as argument and defaults to the actual table state
             h4 returned value
             p It returns a Promise which will eventually resolve with a data array whose items have the following structure:
             dl

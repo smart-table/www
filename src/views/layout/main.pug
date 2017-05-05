@@ -4,15 +4,19 @@ html(lang='en')
         meta(charset='utf8')
         title #{title}
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        link(href='../src/css/theme.css', rel='stylesheet')
-        link(href='../node_modules/prismjs/themes/prism-tomorrow.css', rel='stylesheet')
+        link(rel="icon",href="./assets/logo.svg")
+        link(href='./assets/theme.css', rel='stylesheet')
+        link(href='./assets/prism-tomorrow.css', rel='stylesheet')
+        link(href='./assets/logo.svg', rel='icon')
+        if scripts
+            link(href='./assets/demo.css', rel='stylesheet')
     body
         a(href="#main") Skip to content
         include header
         main#main
             block content
         include footer
-    script.
-      for (let f of [...document.querySelectorAll('.framed')]){
-        f.style.setProperty('--edgeLength', Math.floor(Math.random() * 100) + '%');
-      }
+        if scripts
+            script(src='./assets/dataBundle.min.js')
+            script(src='./assets/demo.min.js')
+

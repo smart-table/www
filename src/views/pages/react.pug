@@ -1,0 +1,91 @@
+extends ../layout/main
+include  ../mixins/helper
+include  ../mixins/code
+include  ../mixins/layout
+
+block content
+    +center-container()
+        h1 Documentation - React binding
+    p The binding for #[a(href="https://facebook.github.io/react") React] comes as a set of #[a(href='http://devdocs.io/react/higher-order-components') higher order components] which basically link a smart-table directive to your component so you don't have to take care of the subscriptions or the updates and can focus on the view part only
+    p See the example #[a(href="https://codepen.io/lorenzofox3/pen/GmEvLO?editors=1010") CodePen]. A more complete example should be available on #[a(href='https://github.com/smart-table/smart-table-react') the project repository].
+    h2 Usage
+    p The package itself is "framework agnostic". It means it should work for any react like framework such as #[a(href='https://preactjs.com/') Preact]. However you will need to initialize the module with the framework you use.
+    h3 Initialise with React
+    p Just pass the React namespace
+    +code('init-react.js')
+    h3 Initialise with Preact
+    p Map method names (technically you only need the #[code Component] class and the #[code createElement] method equivalents)
+    +code('init-preact.js')
+    p You can then use the exported object everywhere in your application. The rest of the documentation will assume the exported module is in the #[em smart-table.js] file.
+    h3 Conventions
+    p As mentioned the produced higher order components will be built around the regular smart table directives with the following conventions
+    ul
+        li The directive instance will be available on your component as #[code this.stDirective]. And will be passed to your render functions as #[code stDirective] property.
+        li The part of the table state relevant to the directive will be watched (will trigger an update) and available on your component state as #[code stState] property. It will also be passed to your render function as the #[code stState] property.
+        li When the directive needs some configuration, you should be able to pass the data through attributes as explained in the following detailed documentation. Most of them will require the instance of your smart table as the #[code smartTable] attribute
+    h2 Detailed HOC
+    +method('Table HOC')
+        p This HOC should help you to create the root component. It will expose the currently displayed collection as the #[code displayed] property.
+        p The only (and mandatory) configuration attribute will be the instance of your smart table.
+        +code('react-table.js')
+        p That is it now your rows will be updated whenever the table state change.
+    +method('Sort HOC')
+        p This hoc will help you to use the sort directive within your component.
+        h4 Configurations attributes
+        dl
+            dt.mandatory smartTable
+            dd The instance of smart table
+            dt stSort
+            dd The pointer to the sorted property
+            dt stSortCycle
+            dd Whether the toggle will cycle through the 3 sort states or simply pass from ascending sort to descending sort only (default to false)
+        h4 Example
+        p Here is an example of sortable header which will toggle the sort state when clicked and will change its class name based on the current sort state
+        +code('react-sort.js')
+    +method('Search HOC')
+        p This hoc will help you to use the search directive by creating controlled search input
+        h4 Configuration attributes
+        dl
+            dt.mandatory smartTable
+            dd The instance of smart table
+            dt stSearchScope
+            dd An array of pointers which will define the search scope
+        h4 Example
+        p An example of a search input which will trigger a search whenever the input value changes
+        +code('react-search.js')
+    +method('Filter HOC')
+        p This mixin will help you to use the filter directive in your components
+        h4 Configuration attributes
+        dl
+            dt.mandatory smartTable
+            dd The instance of smart table
+            dt.mandatory stFilter
+            dd The pointer to the filtered property
+            dt stFilterType
+            dd The type of the property (defaults to string)
+            dt stFilterOperator
+            dd The operator of the filter clause (defaults to "includes")
+        h4 Example
+        p An example of a filter input component which will trigger a filter query whenever the input value changes
+        +code('react-filter.js')
+    +method('Pagination HOC')
+        p This HOC will help you to use the slice directive to build advanced pagination components
+        h4 Configuration attributes
+        dl
+            dt.mandatory smartTable
+            dd The instance of smart-table
+        h4 Example
+        p This example provides a basic pagination component displaying the current page and which allows to go the previous or the next page
+        +code('react-pagination.js')
+    +method('Loading indicator HOC')
+        p This HOC will help you tu use the loading indicator directive.
+        h4 Configuration attributes
+        dl
+            dt.mandatory smartTable
+            dd The instance of smart-table
+        h4 Example
+        p This example will change the class name of a loading indicator overlay depending on the current processing state of the component
+        +code('react-indicator.js')
+
+
+

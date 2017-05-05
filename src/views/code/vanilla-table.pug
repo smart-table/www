@@ -1,0 +1,38 @@
+div#table-container
+    table
+        thead
+            tr
+                th Surname
+                th Name
+        tbody
+script.
+    import { table as tableComponentFactory } from "smart-table-vanilla";
+    import { table } from "smart-table";
+
+    const el = document.getElementById("table-container");
+
+    const tbody = el.querySelector("tbody");
+    const rowFactory = ({
+      surname,
+      name
+    }) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${surname}</td><td>${name}</td>`;
+      return tr;
+    };
+
+    const t = table({
+      data: [
+        { surname: "Renard", name: "Laurent" },
+        { surname: "Leponge", name: "Bob" }
+      ]
+    });
+    const tableComponent = tableComponentFactory({ el, table: t });
+
+    tableComponent.onDisplayChange(displayed => {
+      tbody.innerHTML = "";
+      for (let r of displayed) {
+        const newChild = rowFactory(r.value);
+        tbody.appendChild(newChild);
+      }
+    });

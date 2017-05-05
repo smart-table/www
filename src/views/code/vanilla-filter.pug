@@ -1,0 +1,23 @@
+table
+    thead
+        tr
+            th Surname
+            th Name
+            th Gender
+            th Birth date
+        tr
+            th
+                input(data-st-filter="name.last")
+            th
+                input(data-st-filter="name.first")
+            th
+                select(data-st-filter="gender", data-st-filter-operator="is")
+                    option(value="") -
+                    option(value="female") Female
+                    option(value="male") Male
+            th
+                label
+                    | Born after:
+                input(data-st-filter="birthDate", data-st-filter-operator="gte", type="date")
+    tbody
+        //..

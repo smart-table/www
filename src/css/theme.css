@@ -14,8 +14,12 @@ body {
     background: var(--backgroundColor);
     color: var(--fontColor);
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: "Open Sans", "OpenSans", sans-serif;
     margin: 0;
+    font-size: 18px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 body * {
@@ -25,7 +29,7 @@ body * {
 main {
     max-width: 60rem;
     margin: auto;
-    margin-top: 1em;
+    padding: 4em 0;
 }
 
 a {
@@ -54,6 +58,11 @@ h3 {
     color: white;
     font-weight: normal;
     background-image: linear-gradient(225deg, var(--backgroundColor), var(--backgroundColor) 1.5rem, transparent 1.5rem);
+}
+
+.feature-container h3 {
+    border-bottom: 1px solid var(--fontColor);
+    font-size: 1.75rem;
 }
 
 .feature-container:nth-child(2n) h3 {
@@ -114,15 +123,35 @@ nav > ul:first-child {
 [role='menu'] {
     display: flex;
     font-size: 0.9rem;
-    color: #12474e;
+    color: white;
     border-bottom: 1px solid var(--primaryColor);
     justify-content: center;
     box-shadow: 0 1px 2px 0 #b3b3b3;
+    background-color: var(--fontColor);
+    background-image: linear-gradient(45deg, var(--primaryColor), var(--primaryColor) 20%, transparent 20%),
+    linear-gradient(-45deg, var(--primaryColor), var(--primaryColor) 20%, transparent 20%),
+    linear-gradient(to top, #1a565d, var(--fontColor));
 }
 
 [role='menu'] ul {
     margin: 0;
     padding: 1em 0;
+    animation-name: expandable-section-in;
+    animation-duration: 0.4s;
+    animation-timing-function: ease-out;
+}
+
+@keyframes expandable-section-in {
+    0% {
+        transform: scaleY(0);
+        transform-origin: top;
+        opacity: 0;
+    }
+    100% {
+        transform-origin: top;
+        transform: scaleY(1);
+        opacity: 1;
+    }
 }
 
 [role='menu']:not(:target) {
@@ -199,7 +228,6 @@ nav a:not(.logo):hover > span:last-child:after {
 
 .punchline {
     font-size: 1.1rem;
-    margin-top: 2em;
     justify-content: space-between;
     background-color: var(--fontColor);
     background-image: linear-gradient(135deg, var(--backgroundColor), var(--backgroundColor) 35%, transparent 35%),
@@ -287,10 +315,19 @@ a[href='#main'] {
     height: 1em;
 }
 
-code {
+code:not(.language-markup) {
     background: var(--fontColor);
     color: white;
-    padding: 0 0.3em;
+    padding: 0 0.5em;
+    font-size: 0.85em;
+    border-radius: 2px;
+}
+
+pre.language-markup {
+    border-left: 4px solid var(--primaryColor);
+    border-right: 4px solid var(--primaryColor);
+    font-size: 0.9em;
+    box-shadow: 0 0 3px 0 #595959;
 }
 
 .icon svg {
@@ -351,7 +388,7 @@ h4 {
 @media (max-width: 780px) {
     main {
         padding: 0.3em;
-        margin-top:0;
+        margin-top: 0;
     }
 
     .feature-container, .punchline, nav > ul, #main-footer {
@@ -365,6 +402,7 @@ h4 {
 
     [role='menu'] {
         flex-direction: column;
+        background-image: linear-gradient(to top, #1a565d, var(--fontColor));
     }
 
     .method-container {
@@ -381,7 +419,7 @@ h4 {
 
     .punchline {
         background-image: none;
-        margin:0;
+        margin: 0;
     }
 
     .feature-container:nth-child(2n) {
