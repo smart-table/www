@@ -21,4 +21,4 @@ const PersonTable = table(() =>
     </table>
   </div>);
 
-mount(PersonTable, {}, document.getElementById('demo-container'));
+setTimeout(() => mount(PersonTable, {}, document.getElementById('demo-container')), 10);

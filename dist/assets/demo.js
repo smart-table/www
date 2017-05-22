@@ -1568,6 +1568,6 @@ const PersonTable = table(() =>
     )
   ));
 
-mount(PersonTable, {}, document.getElementById('demo-container'));
+setTimeout(() => mount(PersonTable, {}, document.getElementById('demo-container')), 10);
 
 }());
