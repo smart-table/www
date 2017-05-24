@@ -1,2 +1,2 @@
 # www
-documentation website for smart-table
+documentation [website](https://smart-table.github.io/www/dist/) for smart-table
