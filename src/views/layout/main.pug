@@ -19,6 +19,13 @@ html(lang='en')
         if scripts
             script(src='./assets/dataBundle.min.js')
             script(src='./assets/demo.min.js')
+        script.
+            if(navigator.serviceWorker) {
+                  navigator.serviceWorker.register('./sw.js')
+                  .catch(function(err) {
+                    console.error('Unable to register service worker.', err);
+                  });
+            }
         script(async).
           (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
