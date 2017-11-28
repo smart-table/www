@@ -76,7 +76,7 @@ const fileManifest = [
   },
   {
     "url": "index.html",
-    "revision": "b250e01a24e52f7fe8bc6e8af434b366"
+    "revision": "dda554f3e82aa6c332d5e10b7d3da22a"
   },
   {
     "url": "preact.html",
