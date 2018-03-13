@@ -1,12 +1,35 @@
 (function () {
 'use strict';
 
-const createTextVNode = (value) => ({
-  nodeType: 'Text',
-  children: [],
-  props: {value},
-  lifeCycle: 0
+const createTextVNode = value => ({
+	nodeType: 'Text',
+	children: [],
+	props: {value},
+	lifeCycle: 0
 });
+
+const normalize = (children, currentText = '', normalized = []) => {
+	if (children.length === 0) {
+		if (currentText) {
+			normalized.push(createTextVNode(currentText));
+		}
+		return normalized;
+	}
+
+	const child = children.shift();
+	const type = typeof child;
+	if (type === 'object' || type === 'function') {
+		if (currentText) {
+			normalized.push(createTextVNode(currentText));
+			currentText = '';
+		}
+		normalized.push(child);
+	} else {
+		currentText += child;
+	}
+
+	return normalize(children, currentText, normalized);
+};
 
 /**
  * Transform hyperscript into virtual dom node
@@ -15,225 +38,224 @@ const createTextVNode = (value) => ({
  * @param children - the virtual dom nodes related to the current node children
  * @returns {Object} - a virtual dom node
  */
-function h (nodeType, props, ...children) {
-  const flatChildren = children.reduce((acc, child) => {
-    const childrenArray = Array.isArray(child) ? child : [child];
-    return acc.concat(childrenArray);
-  }, [])
-    .map(child => {
-      // normalize text node to have same structure than regular dom nodes
-      const type = typeof child;
-      return type === 'object' || type === 'function' ? child : createTextVNode(child);
-    });
+function h(nodeType, props, ...children) {
+	const flatChildren = [];
+	for (const c of children) {
+		if (Array.isArray(c)) {
+			flatChildren.push(...c);
+		} else {
+			flatChildren.push(c);
+		}
+	}
 
-  if (typeof nodeType !== 'function') {//regular html/text node
-    return {
-      nodeType,
-      props: props,
-      children: flatChildren,
-      lifeCycle: 0
-    };
-  } else {
-    const fullProps = Object.assign({children: flatChildren}, props);
-    const comp = nodeType(fullProps);
-    return typeof comp !== 'function' ? comp : h(comp, props, ...flatChildren); //functional comp vs combinator (HOC)
-  }
+	const normalizedChildren = normalize(flatChildren);
+
+	if (typeof nodeType !== 'function') { // Regular html/text node
+		return {
+			nodeType,
+			props,
+			children: normalizedChildren,
+			lifeCycle: 0
+		};
+	}
+
+	const fullProps = Object.assign({children: normalizedChildren}, props);
+	const comp = nodeType(fullProps);
+	const compType = typeof comp;
+	return compType !== 'function' ? comp : h(comp, props, ...normalizedChildren); // Functional comp vs combinator (HOC)
 }
 
-function swap (f) {
-  return (a, b) => f(b, a);
-}
+const swap = f => (a, b) => f(b, a);
 
-function compose (first, ...fns) {
-  return (...args) => fns.reduce((previous, current) => current(previous), first(...args));
-}
+const compose = (first, ...fns) => (...args) => fns.reduce((previous, current) => current(previous), first(...args));
 
-function curry (fn, arityLeft) {
-  const arity = arityLeft || fn.length;
-  return (...args) => {
-    const argLength = args.length || 1;
-    if (arity === argLength) {
-      return fn(...args);
-    } else {
-      const func = (...moreArgs) => fn(...args, ...moreArgs);
-      return curry(func, arity - args.length);
-    }
-  };
-}
+const curry = (fn, arityLeft) => {
+	const arity = arityLeft || fn.length;
+	return (...args) => {
+		const argLength = args.length || 1;
+		if (arity === argLength) {
+			return fn(...args);
+		}
+		const func = (...moreArgs) => fn(...args, ...moreArgs);
+		return curry(func, arity - args.length);
+	};
+};
 
-
-
-function tap (fn) {
-  return arg => {
-    fn(arg);
-    return arg;
-  }
-}
+const tap = fn => arg => {
+	fn(arg);
+	return arg;
+};
 
 const nextTick = fn => setTimeout(fn, 0);
 
 const pairify = holder => key => [key, holder[key]];
 
 const isShallowEqual = (a, b) => {
-  const aKeys = Object.keys(a);
-  const bKeys = Object.keys(b);
-  return aKeys.length === bKeys.length && aKeys.every((k) => a[k] === b[k]);
+	const aKeys = Object.keys(a);
+	const bKeys = Object.keys(b);
+	return aKeys.length === bKeys.length && aKeys.every(k => a[k] === b[k]);
 };
 
-const ownKeys = obj => Object.keys(obj).filter(k => obj.hasOwnProperty(k));
+const ownKeys = obj => Object.getOwnPropertyNames(obj);
 
 const isDeepEqual = (a, b) => {
-  const type = typeof a;
+	const type = typeof a;
+	const typeB = typeof b;
 
-  //short path(s)
-  if (a === b) {
-    return true;
-  }
+	// Short path(s)
+	if (a === b) {
+		return true;
+	}
 
-  if (type !== typeof b) {
-    return false;
-  }
+	if (type !== typeB) {
+		return false;
+	}
 
-  if (type !== 'object') {
-    return a === b;
-  }
+	if (type !== 'object') {
+		return a === b;
+	}
 
-  // objects ...
-  if (a === null || b === null) {
-    return false;
-  }
+	// Objects ...
+	if (a === null || b === null) {
+		return false;
+	}
 
-  if (Array.isArray(a)) {
-    return a.length && b.length && a.every((item, i) => isDeepEqual(a[i], b[i]));
-  }
+	if (Array.isArray(a)) {
+		return a.length && b.length && a.every((item, i) => isDeepEqual(a[i], b[i]));
+	}
 
-  const aKeys = ownKeys(a);
-  const bKeys = ownKeys(b);
-  return aKeys.length === bKeys.length && aKeys.every(k => isDeepEqual(a[k], b[k]));
+	const aKeys = ownKeys(a);
+	const bKeys = ownKeys(b);
+	return aKeys.length === bKeys.length && aKeys.every(k => isDeepEqual(a[k], b[k]));
 };
 
 const identity = a => a;
 
-const noop = _ => {
-};
+const noop = () => {};
 
 const SVG_NP = 'http://www.w3.org/2000/svg';
 
-const updateDomNodeFactory = (method) => (items) => tap(domNode => {
-  for (let pair of items) {
-    domNode[method](...pair);
-  }
+const updateDomNodeFactory = method => items => tap(domNode => {
+	for (const pair of items) {
+		domNode[method](...pair);
+	}
 });
 
 const removeEventListeners = updateDomNodeFactory('removeEventListener');
+
 const addEventListeners = updateDomNodeFactory('addEventListener');
-const setAttributes = (items) => tap((domNode) => {
-  const attributes = items.filter(([key, value]) => typeof value !== 'function');
-  for (let [key, value] of attributes) {
-    value === false ? domNode.removeAttribute(key) : domNode.setAttribute(key, value);
-  }
-});
-const removeAttributes = (items) => tap(domNode => {
-  for (let attr of items) {
-    domNode.removeAttribute(attr);
-  }
+
+const setAttributes = items => tap(domNode => {
+	const attributes = items.filter(pair => typeof pair.value !== 'function');
+	for (const [key, value] of attributes) {
+		if (value === false) {
+			domNode.removeAttribute(key);
+		} else {
+			domNode.setAttribute(key, value);
+		}
+	}
 });
 
-const setTextNode = val => node => node.textContent = val;
+const removeAttributes = items => tap(domNode => {
+	for (const attr of items) {
+		domNode.removeAttribute(attr);
+	}
+});
+
+const setTextNode = val => node => {
+	node.textContent = val;
+};
 
 const createDomNode = (vnode, parent) => {
-  if (vnode.nodeType === 'svg') {
-    return document.createElementNS(SVG_NP, vnode.nodeType);
-  } else if (vnode.nodeType === 'Text') {
-    return document.createTextNode(vnode.nodeType);
-  } else {
-    return parent.namespaceURI === SVG_NP ? document.createElementNS(SVG_NP, vnode.nodeType) : document.createElement(vnode.nodeType);
-  }
+	if (vnode.nodeType === 'svg') {
+		return document.createElementNS(SVG_NP, vnode.nodeType);
+	} else if (vnode.nodeType === 'Text') {
+		return document.createTextNode(vnode.nodeType);
+	}
+	return parent.namespaceURI === SVG_NP ?
+		document.createElementNS(SVG_NP, vnode.nodeType) :
+		document.createElement(vnode.nodeType);
 };
 
-const getEventListeners = (props) => {
-  return Object.keys(props)
-    .filter(k => k.substr(0, 2) === 'on')
-    .map(k => [k.substr(2).toLowerCase(), props[k]]);
-};
+const getEventListeners = props => Object.keys(props)
+	.filter(k => k.substr(0, 2) === 'on')
+	.map(k => [k.substr(2).toLowerCase(), props[k]]);
 
-const traverse = function * (vnode) {
-  yield vnode;
-  if (vnode.children && vnode.children.length) {
-    for (let child of vnode.children) {
-      yield * traverse(child);
-    }
-  }
-};
+function * traverse(vnode) {
+	yield vnode;
+	if (vnode.children && vnode.children.length > 0) {
+		for (const child of vnode.children) {
+			yield * traverse(child);
+		}
+	}
+}
 
-const updateEventListeners = ({props:newNodeProps}={}, {props:oldNodeProps}={}) => {
-  const newNodeEvents = getEventListeners(newNodeProps || {});
-  const oldNodeEvents = getEventListeners(oldNodeProps || {});
+const updateEventListeners = ({props: newNodeProps} = {}, {props: oldNodeProps} = {}) => {
+	const newNodeEvents = getEventListeners(newNodeProps || {});
+	const oldNodeEvents = getEventListeners(oldNodeProps || {});
 
-  return newNodeEvents.length || oldNodeEvents.length ?
-    compose(
-      removeEventListeners(oldNodeEvents),
-      addEventListeners(newNodeEvents)
-    ) : noop;
+	return newNodeEvents.length || oldNodeEvents.length ?
+		compose(
+			removeEventListeners(oldNodeEvents),
+			addEventListeners(newNodeEvents)
+		) : noop;
 };
 
 const updateAttributes = (newVNode, oldVNode) => {
-  const newVNodeProps = newVNode.props || {};
-  const oldVNodeProps = oldVNode.props || {};
+	const newVNodeProps = newVNode.props || {};
+	const oldVNodeProps = oldVNode.props || {};
 
-  if (isShallowEqual(newVNodeProps, oldVNodeProps)) {
-    return noop;
-  }
+	if (isShallowEqual(newVNodeProps, oldVNodeProps)) {
+		return noop;
+	}
 
-  if (newVNode.nodeType === 'Text') {
-    return setTextNode(newVNode.props.value);
-  }
+	if (newVNode.nodeType === 'Text') {
+		return setTextNode(newVNode.props.value);
+	}
 
-  const newNodeKeys = Object.keys(newVNodeProps);
-  const oldNodeKeys = Object.keys(oldVNodeProps);
-  const attributesToRemove = oldNodeKeys.filter(k => !newNodeKeys.includes(k));
+	const newNodeKeys = Object.keys(newVNodeProps);
+	const oldNodeKeys = Object.keys(oldVNodeProps);
+	const attributesToRemove = oldNodeKeys.filter(k => !newNodeKeys.includes(k));
 
-  return compose(
-    removeAttributes(attributesToRemove),
-    setAttributes(newNodeKeys.map(pairify(newVNodeProps)))
-  );
+	return compose(
+		removeAttributes(attributesToRemove),
+		setAttributes(newNodeKeys.map(pairify(newVNodeProps)))
+	);
 };
 
 const domFactory = createDomNode;
 
-// apply vnode diffing to actual dom node (if new node => it will be mounted into the parent)
+// Apply vnode diffing to actual dom node (if new node => it will be mounted into the parent)
 const domify = (oldVnode, newVnode, parentDomNode) => {
-  if (!oldVnode) {//there is no previous vnode
-    if (newVnode) {//new node => we insert
-      newVnode.dom = parentDomNode.appendChild(domFactory(newVnode, parentDomNode));
-      newVnode.lifeCycle = 1;
-      return {vnode: newVnode, garbage: null};
-    } else {//else (irrelevant)
-      throw new Error('unsupported operation')
-    }
-  } else {//there is a previous vnode
-    if (!newVnode) {//we must remove the related dom node
-      parentDomNode.removeChild(oldVnode.dom);
-      return ({garbage: oldVnode, dom: null});
-    } else if (newVnode.nodeType !== oldVnode.nodeType) {//it must be replaced
-      newVnode.dom = domFactory(newVnode, parentDomNode);
-      newVnode.lifeCycle = 1;
-      parentDomNode.replaceChild(newVnode.dom, oldVnode.dom);
-      return {garbage: oldVnode, vnode: newVnode};
-    } else {// only update attributes
-      newVnode.dom = oldVnode.dom;
-      // pass the unMountHook
-      if(oldVnode.onUnMount){
-        newVnode.onUnMount = oldVnode.onUnMount;
-      }
-      newVnode.lifeCycle = oldVnode.lifeCycle + 1;
-      return {garbage: null, vnode: newVnode};
-    }
-  }
+	if (!oldVnode && newVnode) { // There is no previous vnode
+		newVnode.dom = parentDomNode.appendChild(domFactory(newVnode, parentDomNode));
+		newVnode.lifeCycle = 1;
+		return {vnode: newVnode, garbage: null};
+	}
+
+	// There is a previous vnode
+	if (!newVnode) { // We must remove the related dom node
+		parentDomNode.removeChild(oldVnode.dom);
+		return ({garbage: oldVnode, dom: null});
+	} else if (newVnode.nodeType !== oldVnode.nodeType) { // It must be replaced
+		newVnode.dom = domFactory(newVnode, parentDomNode);
+		newVnode.lifeCycle = 1;
+		parentDomNode.replaceChild(newVnode.dom, oldVnode.dom);
+		return {garbage: oldVnode, vnode: newVnode};
+	}
+
+	// Only update attributes
+	newVnode.dom = oldVnode.dom;
+	// Pass the unMountHook
+	if (oldVnode.onUnMount) {
+		newVnode.onUnMount = oldVnode.onUnMount;
+	}
+	newVnode.lifeCycle = oldVnode.lifeCycle + 1;
+	return {garbage: null, vnode: newVnode};
 };
 
 /**
- * render a virtual dom node, diffing it with its previous version, mounting it in a parent dom node
+ * Render a virtual dom node, diffing it with its previous version, mounting it in a parent dom node
  * @param oldVnode
  * @param newVnode
  * @param parentDomNode
@@ -241,82 +263,79 @@ const domify = (oldVnode, newVnode, parentDomNode) => {
  * @returns {Array}
  */
 const render = (oldVnode, newVnode, parentDomNode, onNextTick = []) => {
+	// 1. transform the new vnode to a vnode connected to an actual dom element based on vnode versions diffing
+	// 	i. note at this step occur dom insertions/removals
+	// 	ii. it may collect sub tree to be dropped (or "unmounted")
+	const {vnode, garbage} = domify(oldVnode, newVnode, parentDomNode);
 
-  //1. transform the new vnode to a vnode connected to an actual dom element based on vnode versions diffing
-  // i. note at this step occur dom insertions/removals
-  // ii. it may collect sub tree to be dropped (or "unmounted")
-  const {vnode, garbage} = domify(oldVnode, newVnode, parentDomNode);
+	if (garbage !== null) {
+		// Defer unmount lifecycle as it is not "visual"
+		for (const g of traverse(garbage)) {
+			if (g.onUnMount) {
+				onNextTick.push(g.onUnMount);
+			}
+		}
+	}
 
-  if (garbage !== null) {
-    // defer unmount lifecycle as it is not "visual"
-    for (let g of traverse(garbage)) {
-      if (g.onUnMount) {
-        onNextTick.push(g.onUnMount);
-      }
-    }
-  }
+	// Normalisation of old node (in case of a replace we will consider old node as empty node (no children, no props))
+	const tempOldNode = garbage !== null || !oldVnode ? {length: 0, children: [], props: {}} : oldVnode;
 
-  //Normalisation of old node (in case of a replace we will consider old node as empty node (no children, no props))
-  const tempOldNode = garbage !== null || !oldVnode ? {length: 0, children: [], props: {}} : oldVnode;
+	if (vnode) {
+		// 2. update dom attributes based on vnode prop diffing.
+		// Sync
+		if (vnode.onUpdate && vnode.lifeCycle > 1) {
+			vnode.onUpdate();
+		}
 
-  if (vnode) {
+		updateAttributes(vnode, tempOldNode)(vnode.dom);
 
-    //2. update dom attributes based on vnode prop diffing.
-    //sync
-    if (vnode.onUpdate && vnode.lifeCycle > 1) {
-      vnode.onUpdate();
-    }
+		// Fast path
+		if (vnode.nodeType === 'Text') {
+			return onNextTick;
+		}
 
-    updateAttributes(vnode, tempOldNode)(vnode.dom);
+		if (vnode.onMount && vnode.lifeCycle === 1) {
+			onNextTick.push(() => vnode.onMount());
+		}
 
-    //fast path
-    if (vnode.nodeType === 'Text') {
-      return onNextTick;
-    }
+		const childrenCount = Math.max(tempOldNode.children.length, vnode.children.length);
 
-    if (vnode.onMount && vnode.lifeCycle === 1) {
-      onNextTick.push(() => vnode.onMount());
-    }
+		// Async will be deferred as it is not "visual"
+		const setListeners = updateEventListeners(vnode, tempOldNode);
+		if (setListeners !== noop) {
+			onNextTick.push(() => setListeners(vnode.dom));
+		}
 
-    const childrenCount = Math.max(tempOldNode.children.length, vnode.children.length);
+		// 3. recursively traverse children to update dom and collect functions to process on next tick
+		if (childrenCount > 0) {
+			for (let i = 0; i < childrenCount; i++) {
+				// We pass onNextTick as reference (improve perf: memory + speed)
+				render(tempOldNode.children[i], vnode.children[i], vnode.dom, onNextTick);
+			}
+		}
+	}
 
-    //async will be deferred as it is not "visual"
-    const setListeners = updateEventListeners(vnode, tempOldNode);
-    if (setListeners !== noop) {
-      onNextTick.push(() => setListeners(vnode.dom));
-    }
-
-    //3 recursively traverse children to update dom and collect functions to process on next tick
-    if (childrenCount > 0) {
-      for (let i = 0; i < childrenCount; i++) {
-        // we pass onNextTick as reference (improve perf: memory + speed)
-        render(tempOldNode.children[i], vnode.children[i], vnode.dom, onNextTick);
-      }
-    }
-  }
-
-  return onNextTick;
+	return onNextTick;
 };
 
 const hydrate = (vnode, dom) => {
-  'use strict';
-  const hydrated = Object.assign({}, vnode);
-  const domChildren = Array.from(dom.childNodes).filter(n => n.nodeType !== 3 || n.nodeValue.trim() !== '');
-  hydrated.dom = dom;
-  hydrated.children = vnode.children.map((child, i) => hydrate(child, domChildren[i]));
-  return hydrated;
+	const hydrated = Object.assign({}, vnode);
+	const domChildren = Array.from(dom.childNodes).filter(n => n.nodeType !== 3 || n.nodeValue.trim() !== '');
+	hydrated.dom = dom;
+	hydrated.children = vnode.children.map((child, i) => hydrate(child, domChildren[i]));
+	return hydrated;
 };
 
 const mount = curry((comp, initProp, root) => {
-  const vnode = comp.nodeType !== void 0 ? comp : comp(initProp || {});
-  const oldVNode = root.children.length ? hydrate(vnode, root.children[0]) : null;
-  const batch = render(oldVNode, vnode, root);
-  nextTick(() => {
-    for (let op of batch) {
-      op();
-    }
-  });
-  return vnode;
+	const vnode = comp.nodeType !== void 0 ? comp : comp(initProp || {});
+	const oldVNode = root.children.length ? hydrate(vnode, root.children[0]) : null;
+	const batch = render(oldVNode, vnode, root);
+	nextTick(() => {
+		for (const op of batch) {
+			op();
+		}
+	});
+	return vnode;
 });
 
 /**
@@ -325,46 +344,48 @@ const mount = curry((comp, initProp, root) => {
  * @param initialVNode - the initial virtual dom node related to the component (ie once it has been mounted)
  * @returns {Function} - the update function
  */
-function update (comp, initialVNode) {
-  let oldNode = initialVNode;
-  const updateFunc = (props, ...args) => {
-    const mount$$1 = oldNode.dom.parentNode;
-    const newNode = comp(Object.assign({children: oldNode.children || []}, oldNode.props, props), ...args);
-    const nextBatch = render(oldNode, newNode, mount$$1);
+var update = (comp, initialVNode) => {
+	let oldNode = initialVNode;
+	return (props, ...args) => {
+		const mount$$1 = oldNode.dom.parentNode;
+		const newNode = comp(Object.assign({children: oldNode.children || []}, oldNode.props, props), ...args);
+		const nextBatch = render(oldNode, newNode, mount$$1);
 
-    // danger zone !!!!
-    // change by keeping the same reference so the eventual parent node does not need to be "aware" tree may have changed downstream: oldNode may be the child of someone ...(well that is a tree data structure after all :P )
-    oldNode = Object.assign(oldNode || {}, newNode);
-    // end danger zone
+		// Danger zone !!!!
+		// Change by keeping the same reference so the eventual parent node does not need to be "aware" tree may have changed downstream: oldNode may be the child of someone ...(well that is a tree data structure after all :P )
+		oldNode = Object.assign(oldNode || {}, newNode);
+		// End danger zone
 
-    nextTick(function () {
-      for (let op of nextBatch) {
-        op();
-      }
-    });
-    return newNode;
-  };
-  return updateFunc;
-}
+		nextTick(() => {
+			for (const op of nextBatch) {
+				op();
+			}
+		});
+
+		return newNode;
+	};
+};
 
 const lifeCycleFactory = method => curry((fn, comp) => (props, ...args) => {
-  const n = comp(props, ...args);
-  n[method] = () => fn(n, ...args);
-  return n;
+	const n = comp(props, ...args);
+	const applyFn = () => fn(n, ...args);
+	const current = n[method];
+	n[method] = current ? compose(current, applyFn) : applyFn;
+	return n;
 });
 
 /**
- * life cycle: when the component is mounted
+ * Life cycle: when the component is mounted
  */
 const onMount = lifeCycleFactory('onMount');
 
 /**
- * life cycle: when the component is unmounted
+ * Life cycle: when the component is unmounted
  */
 const onUnMount = lifeCycleFactory('onUnMount');
 
 /**
- * life cycle: before the component is updated
+ * Life cycle: before the component is updated
  */
 const onUpdate = lifeCycleFactory('onUpdate');
 
@@ -373,253 +394,250 @@ const onUpdate = lifeCycleFactory('onUpdate');
  * @param comp {Function} - the component
  * @returns {Function} - a new wrapped component
  */
-var withState = function (comp) {
-  return function () {
-    let updateFunc;
-    const wrapperComp = (props, ...args) => {
-      //lazy evaluate updateFunc (to make sure it is defined
-      const setState = (newState) => updateFunc(newState);
-      return comp(props, setState, ...args);
-    };
-    const setUpdateFunction = (vnode) => {
-      updateFunc = update(wrapperComp, vnode);
-    };
+var withState = comp => () => {
+	let updateFunc;
+	const wrapperComp = (props, ...args) => {
+		// Lazy evaluate updateFunc (to make sure it is defined
+		const setState = newState => updateFunc(newState);
+		return comp(props, setState, ...args);
+	};
+	const setUpdateFunction = vnode => {
+		updateFunc = update(wrapperComp, vnode);
+	};
 
-    return compose(onMount(setUpdateFunction), onUpdate(setUpdateFunction))(wrapperComp);
-  };
+	return compose(onMount(setUpdateFunction), onUpdate(setUpdateFunction))(wrapperComp);
 };
 
-/**
- * Combinator to create a Elm like app
- * @param view {Function} - a component which takes as arguments the current model and the list of updates
- * @returns {Function} - a Elm like application whose properties "model", "updates" and "subscriptions" will define the related domain specific objects
- */
+const defaultUpdate = (a, b) => isDeepEqual(a, b) === false;
 
 /**
  * Connect combinator: will create "container" component which will subscribe to a Redux like store. and update its children whenever a specific slice of state change under specific circumstances
  * @param store {Object} - The store (implementing the same api than Redux store
- * @param actions {Object} [{}] - The list of actions the connected component will be able to trigger
  * @param sliceState {Function} [state => state] - A function which takes as argument the state and return a "transformed" state (like partial, etc) relevant to the container
  * @returns {Function} - A container factory with the following arguments:
- *  - comp: the component to wrap note the actions object will be passed as second argument of the component for convenience
  *  - mapStateToProp: a function which takes as argument what the "sliceState" function returns and returns an object to be blended into the properties of the component (default to identity function)
  *  - shouldUpdate: a function which takes as arguments the previous and the current versions of what "sliceState" function returns to returns a boolean defining whether the component should be updated (default to a deepEqual check)
  */
-var connect = (store, actions = {}, sliceState = identity) =>
-  (comp, mapStateToProp = identity, shouldUpate = (a, b) => isDeepEqual(a, b) === false) =>
-    (initProp) => {
-      let componentProps = initProp;
-      let updateFunc, previousStateSlice, unsubscriber;
+var connect = (store, sliceState = identity) =>
+	(comp, mapStateToProp = identity, shouldUpate = defaultUpdate) => initProp => {
+		const componentProps = initProp;
+		let updateFunc;
+		let previousStateSlice;
+		let unsubscriber;
 
-      const wrapperComp = (props, ...args) => {
-        return comp(Object.assign(props, mapStateToProp(sliceState(store.getState()))), actions, ...args);
-      };
+		const wrapperComp = (props, ...args) => {
+			return comp(Object.assign(props, mapStateToProp(sliceState(store.getState()))), ...args);
+		};
 
-      const subscribe = onMount((vnode) => {
-        updateFunc = update(wrapperComp, vnode);
-        unsubscriber = store.subscribe(() => {
-          const stateSlice = sliceState(store.getState());
-          if (shouldUpate(previousStateSlice, stateSlice) === true) {
-            Object.assign(componentProps, mapStateToProp(stateSlice));
-            updateFunc(componentProps);
-            previousStateSlice = stateSlice;
-          }
-        });
-      });
+		const subscribe = onMount(vnode => {
+			updateFunc = update(wrapperComp, vnode);
+			unsubscriber = store.subscribe(() => {
+				const stateSlice = sliceState(store.getState());
+				if (shouldUpate(previousStateSlice, stateSlice) === true) {
+					Object.assign(componentProps, mapStateToProp(stateSlice));
+					updateFunc(componentProps);
+					previousStateSlice = stateSlice;
+				}
+			});
+		});
 
-      const unsubscribe = onUnMount(() => {
-        unsubscriber();
-      });
+		const unsubscribe = onUnMount(() => {
+			unsubscriber();
+		});
 
-      return compose(subscribe, unsubscribe)(wrapperComp);
-    };
+		return compose(subscribe, unsubscribe)(wrapperComp);
+	};
 
-function pointer (path) {
+const filterOutFunction = props => Object
+	.entries(props || {})
+	.filter(([key, value]) => typeof value !== 'function');
 
-  const parts = path.split('.');
+const escapeHTML = s => String(s)
+	.replace(/&/g, '&amp;')
+	.replace(/</g, '&lt;')
+	.replace(/>/g, '&gt;');
 
-  function partial (obj = {}, parts = []) {
-    const p = parts.shift();
-    const current = obj[p];
-    return (current === undefined || parts.length === 0) ?
-      current : partial(current, parts);
-  }
+const render$1 = curry((comp, initProp) => {
+	const vnode = comp.nodeType !== void 0 ? comp : comp(initProp || {});
+	const {nodeType, children, props} = vnode;
+	const attributes = escapeHTML(filterOutFunction(props)
+		.map(([key, value]) => typeof value === 'boolean' ? (value === true ? key : '') : `${key}="${value}"`)
+		.join(' '));
+	const childrenHtml = children !== void 0 && children.length > 0 ? children.map(ch => render$1(ch)()).join('') : '';
+	return nodeType === 'Text' ? escapeHTML(String(props.value)) : `<${nodeType}${attributes ? ` ${attributes}` : ''}>${childrenHtml}</${nodeType}>`;
+});
 
-  function set (target, newTree) {
-    let current = target;
-    const [leaf, ...intermediate] = parts.reverse();
-    for (let key of intermediate.reverse()) {
-      if (current[key] === undefined) {
-        current[key] = {};
-        current = current[key];
-      }
-    }
-    current[leaf] = Object.assign(current[leaf] || {}, newTree);
-    return target;
-  }
+function pointer(path) {
+	const parts = path.split('.');
 
-  return {
-    get(target){
-      return partial(target, [...parts])
-    },
-    set
-  }
+	function partial(obj = {}, parts = []) {
+		const p = parts.shift();
+		const current = obj[p];
+		return (current === undefined || parts.length === 0) ?
+			current : partial(current, parts);
+	}
+
+	function set(target, newTree) {
+		let current = target;
+		const [leaf, ...intermediate] = parts.reverse();
+		for (const key of intermediate.reverse()) {
+			if (current[key] === undefined) {
+				current[key] = {};
+				current = current[key];
+			}
+		}
+		current[leaf] = Object.assign(current[leaf] || {}, newTree);
+		return target;
+	}
+
+	return {
+		get(target) {
+			return partial(target, [...parts]);
+		},
+		set
+	};
 }
 
-function sortByProperty (prop) {
-  const propGetter = pointer(prop).get;
-  return (a, b) => {
-    const aVal = propGetter(a);
-    const bVal = propGetter(b);
+function sortByProperty(prop) {
+	const propGetter = pointer(prop).get;
+	return (a, b) => {
+		const aVal = propGetter(a);
+		const bVal = propGetter(b);
 
-    if (aVal === bVal) {
-      return 0;
-    }
+		if (aVal === bVal) {
+			return 0;
+		}
 
-    if (bVal === undefined) {
-      return -1;
-    }
+		if (bVal === undefined) {
+			return -1;
+		}
 
-    if (aVal === undefined) {
-      return 1;
-    }
+		if (aVal === undefined) {
+			return 1;
+		}
 
-    return aVal < bVal ? -1 : 1;
-  }
+		return aVal < bVal ? -1 : 1;
+	};
 }
 
-function sortFactory ({pointer: pointer$$1, direction} = {}) {
-  if (!pointer$$1 || direction === 'none') {
-    return array => [...array];
-  }
+function sortFactory({pointer: pointer$$1, direction} = {}) {
+	if (!pointer$$1 || direction === 'none') {
+		return array => [...array];
+	}
 
-  const orderFunc = sortByProperty(pointer$$1);
-  const compareFunc = direction === 'desc' ? swap(orderFunc) : orderFunc;
+	const orderFunc = sortByProperty(pointer$$1);
+	const compareFunc = direction === 'desc' ? swap(orderFunc) : orderFunc;
 
-  return (array) => [...array].sort(compareFunc);
+	return array => [...array].sort(compareFunc);
 }
 
-function typeExpression (type) {
-  switch (type) {
-    case 'boolean':
-      return Boolean;
-    case 'number':
-      return Number;
-    case 'date':
-      return (val) => new Date(val);
-    default:
-      return compose(String, (val) => val.toLowerCase());
-  }
+function typeExpression(type) {
+	switch (type) {
+		case 'boolean':
+			return Boolean;
+		case 'number':
+			return Number;
+		case 'date':
+			return val => new Date(val);
+		default:
+			return compose(String, val => val.toLowerCase());
+	}
 }
+
+const not = fn => input => !fn(input);
+
+const is = value => input => Object.is(value, input);
+const lt = value => input => input < value;
+const gt = value => input => input > value;
+const equals = value => input => value === input;
+const includes = value => input => input.includes(value);
 
 const operators = {
-  includes(value){
-    return (input) => input.includes(value);
-  },
-  is(value){
-    return (input) => Object.is(value, input);
-  },
-  isNot(value){
-    return (input) => !Object.is(value, input);
-  },
-  lt(value){
-    return (input) => input < value;
-  },
-  gt(value){
-    return (input) => input > value;
-  },
-  lte(value){
-    return (input) => input <= value;
-  },
-  gte(value){
-    return (input) => input >= value;
-  },
-  equals(value){
-    return (input) => value == input;
-  },
-  notEquals(value){
-    return (input) => value != input;
-  }
+	includes,
+	is,
+	isNot: compose(is, not),
+	lt,
+	gte: compose(lt, not),
+	gt,
+	lte: compose(gt, not),
+	equals,
+	notEquals: compose(equals, not)
 };
 
 const every = fns => (...args) => fns.every(fn => fn(...args));
 
-function predicate ({value = '', operator = 'includes', type = 'string'}) {
-  const typeIt = typeExpression(type);
-  const operateOnTyped = compose(typeIt, operators[operator]);
-  const predicateFunc = operateOnTyped(value);
-  return compose(typeIt, predicateFunc);
+function predicate({value = '', operator = 'includes', type = 'string'}) {
+	const typeIt = typeExpression(type);
+	const operateOnTyped = compose(typeIt, operators[operator]);
+	const predicateFunc = operateOnTyped(value);
+	return compose(typeIt, predicateFunc);
 }
 
-//avoid useless filter lookup (improve perf)
-function normalizeClauses (conf) {
-  const output = {};
-  const validPath = Object.keys(conf).filter(path => Array.isArray(conf[path]));
-  validPath.forEach(path => {
-    const validClauses = conf[path].filter(c => c.value !== '');
-    if (validClauses.length) {
-      output[path] = validClauses;
-    }
-  });
-  return output;
+// Avoid useless filter lookup (improve perf)
+function normalizeClauses(conf) {
+	const output = {};
+	const validPath = Object.keys(conf).filter(path => Array.isArray(conf[path]));
+	validPath.forEach(path => {
+		const validClauses = conf[path].filter(c => c.value !== '');
+		if (validClauses.length > 0) {
+			output[path] = validClauses;
+		}
+	});
+	return output;
 }
 
-function filter$1 (filter) {
-  const normalizedClauses = normalizeClauses(filter);
-  const funcList = Object.keys(normalizedClauses).map(path => {
-    const getter = pointer(path).get;
-    const clauses = normalizedClauses[path].map(predicate);
-    return compose(getter, every(clauses));
-  });
-  const filterPredicate = every(funcList);
+function filter(filter) {
+	const normalizedClauses = normalizeClauses(filter);
+	const funcList = Object.keys(normalizedClauses).map(path => {
+		const getter = pointer(path).get;
+		const clauses = normalizedClauses[path].map(predicate);
+		return compose(getter, every(clauses));
+	});
+	const filterPredicate = every(funcList);
 
-  return (array) => array.filter(filterPredicate);
+	return array => array.filter(filterPredicate);
 }
 
-var search$1 = function (searchConf = {}) {
-  const {value, scope = []} = searchConf;
-  const searchPointers = scope.map(field => pointer(field).get);
-  if (!scope.length || !value) {
-    return array => array;
-  } else {
-    return array => array.filter(item => searchPointers.some(p => String(p(item)).includes(String(value))))
-  }
-};
-
-function sliceFactory ({page = 1, size} = {}) {
-  return function sliceFunction (array = []) {
-    const actualSize = size || array.length;
-    const offset = (page - 1) * actualSize;
-    return array.slice(offset, offset + actualSize);
-  };
+function search (searchConf = {}) {
+	const {value, scope = []} = searchConf;
+	const searchPointers = scope.map(field => pointer(field).get);
+	if (scope.length === 0 || !value) {
+		return array => array;
+	}
+	return array => array.filter(item => searchPointers.some(p => String(p(item)).includes(String(value))));
 }
 
-function emitter () {
+function emitter() {
+	const listenersLists = {};
+	const instance = {
+		on(event, ...listeners) {
+			listenersLists[event] = (listenersLists[event] || []).concat(listeners);
+			return instance;
+		},
+		dispatch(event, ...args) {
+			const listeners = listenersLists[event] || [];
+			for (const listener of listeners) {
+				listener(...args);
+			}
+			return instance;
+		},
+		off(event, ...listeners) {
+			if (event === undefined) {
+				Object.keys(listenersLists).forEach(ev => instance.off(ev));
+			} else {
+				const list = listenersLists[event] || [];
+				listenersLists[event] = listeners.length ? list.filter(listener => !listeners.includes(listener)) : [];
+			}
+			return instance;
+		}
+	};
+	return instance;
+}
 
-  const listenersLists = {};
-  const instance = {
-    on(event, ...listeners){
-      listenersLists[event] = (listenersLists[event] || []).concat(listeners);
-      return instance;
-    },
-    dispatch(event, ...args){
-      const listeners = listenersLists[event] || [];
-      for (let listener of listeners) {
-        listener(...args);
-      }
-      return instance;
-    },
-    off(event, ...listeners){
-      if (!event) {
-        Object.keys(listenersLists).forEach(ev => instance.off(ev));
-      } else {
-        const list = listenersLists[event] || [];
-        listenersLists[event] = listeners.length ? list.filter(listener => !listeners.includes(listener)) : [];
-      }
-      return instance;
-    }
-  };
-  return instance;
+var sliceFactory = ({page = 1, size} = {}) => (array = []) => {
+	const actualSize = size || array.length;
+	const offset = (page - 1) * actualSize;
+	return array.slice(offset, offset + actualSize);
 }
 
 const TOGGLE_SORT = 'TOGGLE_SORT';
@@ -631,138 +649,128 @@ const SUMMARY_CHANGED = 'SUMMARY_CHANGED';
 const SEARCH_CHANGED = 'SEARCH_CHANGED';
 const EXEC_ERROR = 'EXEC_ERROR';
 
-function curriedPointer (path) {
-  const {get, set} = pointer(path);
-  return {get, set: curry(set)};
+function curriedPointer(path) {
+	const {get, set} = pointer(path);
+	return {get, set: curry(set)};
 }
 
-var table$3 = function ({
-  sortFactory,
-  tableState,
-  data,
-  filterFactory,
-  searchFactory
-}) {
-  const table = emitter();
-  const sortPointer = curriedPointer('sort');
-  const slicePointer = curriedPointer('slice');
-  const filterPointer = curriedPointer('filter');
-  const searchPointer = curriedPointer('search');
+function table ({sortFactory, tableState, data, filterFactory, searchFactory}) {
+	const table = emitter();
+	const sortPointer = curriedPointer('sort');
+	const slicePointer = curriedPointer('slice');
+	const filterPointer = curriedPointer('filter');
+	const searchPointer = curriedPointer('search');
 
-  const safeAssign = curry((base, extension) => Object.assign({}, base, extension));
-  const dispatch = curry(table.dispatch.bind(table), 2);
+	const safeAssign = curry((base, extension) => Object.assign({}, base, extension));
+	const dispatch = curry(table.dispatch, 2);
 
-  const dispatchSummary = (filtered) => {
-    dispatch(SUMMARY_CHANGED, {
-      page: tableState.slice.page,
-      size: tableState.slice.size,
-      filteredCount: filtered.length
-    });
-  };
+	const dispatchSummary = filtered => dispatch(SUMMARY_CHANGED, {
+		page: tableState.slice.page,
+		size: tableState.slice.size,
+		filteredCount: filtered.length
+	});
 
-  const exec = ({processingDelay = 20} = {}) => {
-    table.dispatch(EXEC_CHANGED, {working: true});
-    setTimeout(function () {
-      try {
-        const filterFunc = filterFactory(filterPointer.get(tableState));
-        const searchFunc = searchFactory(searchPointer.get(tableState));
-        const sortFunc = sortFactory(sortPointer.get(tableState));
-        const sliceFunc = sliceFactory(slicePointer.get(tableState));
-        const execFunc = compose(filterFunc, searchFunc, tap(dispatchSummary), sortFunc, sliceFunc);
-        const displayed = execFunc(data);
-        table.dispatch(DISPLAY_CHANGED, displayed.map(d => {
-          return {index: data.indexOf(d), value: d};
-        }));
-      } catch (e) {
-        table.dispatch(EXEC_ERROR, e);
-      } finally {
-        table.dispatch(EXEC_CHANGED, {working: false});
-      }
-    }, processingDelay);
-  };
+	const exec = ({processingDelay = 20} = {}) => {
+		table.dispatch(EXEC_CHANGED, {working: true});
+		setTimeout(() => {
+			try {
+				const filterFunc = filterFactory(filterPointer.get(tableState));
+				const searchFunc = searchFactory(searchPointer.get(tableState));
+				const sortFunc = sortFactory(sortPointer.get(tableState));
+				const sliceFunc = sliceFactory(slicePointer.get(tableState));
+				const execFunc = compose(filterFunc, searchFunc, tap(dispatchSummary), sortFunc, sliceFunc);
+				const displayed = execFunc(data);
+				table.dispatch(DISPLAY_CHANGED, displayed.map(d => {
+					return {index: data.indexOf(d), value: d};
+				}));
+			} catch (err) {
+				table.dispatch(EXEC_ERROR, err);
+			} finally {
+				table.dispatch(EXEC_CHANGED, {working: false});
+			}
+		}, processingDelay);
+	};
 
-  const updateTableState = curry((pter, ev, newPartialState) => compose(
-    safeAssign(pter.get(tableState)),
-    tap(dispatch(ev)),
-    pter.set(tableState)
-  )(newPartialState));
+	const updateTableState = curry((pter, ev, newPartialState) => compose(
+		safeAssign(pter.get(tableState)),
+		tap(dispatch(ev)),
+		pter.set(tableState)
+	)(newPartialState));
 
-  const resetToFirstPage = () => updateTableState(slicePointer, PAGE_CHANGED, {page: 1});
+	const resetToFirstPage = () => updateTableState(slicePointer, PAGE_CHANGED, {page: 1});
 
-  const tableOperation = (pter, ev) => compose(
-    updateTableState(pter, ev),
-    resetToFirstPage,
-    () => table.exec() // we wrap within a function so table.exec can be overwritten (when using with a server for example)
-  );
+	const tableOperation = (pter, ev) => compose(
+		updateTableState(pter, ev),
+		resetToFirstPage,
+		() => table.exec() // We wrap within a function so table.exec can be overwritten (when using with a server for example)
+	);
 
-  const api = {
-    sort: tableOperation(sortPointer, TOGGLE_SORT),
-    filter: tableOperation(filterPointer, FILTER_CHANGED),
-    search: tableOperation(searchPointer, SEARCH_CHANGED),
-    slice: compose(updateTableState(slicePointer, PAGE_CHANGED), () => table.exec()),
-    exec,
-    eval(state = tableState){
-      return Promise.resolve()
-        .then(function () {
-          const sortFunc = sortFactory(sortPointer.get(state));
-          const searchFunc = searchFactory(searchPointer.get(state));
-          const filterFunc = filterFactory(filterPointer.get(state));
-          const sliceFunc = sliceFactory(slicePointer.get(state));
-          const execFunc = compose(filterFunc, searchFunc, sortFunc, sliceFunc);
-          return execFunc(data).map(d => {
-            return {index: data.indexOf(d), value: d}
-          });
-        });
-    },
-    onDisplayChange(fn){
-      table.on(DISPLAY_CHANGED, fn);
-    },
-    getTableState(){
-      const sort = Object.assign({}, tableState.sort);
-      const search = Object.assign({}, tableState.search);
-      const slice = Object.assign({}, tableState.slice);
-      const filter = {};
-      for (let prop in tableState.filter) {
-        filter[prop] = tableState.filter[prop].map(v => Object.assign({}, v));
-      }
-      return {sort, search, slice, filter};
-    }
-  };
+	const api = {
+		sort: tableOperation(sortPointer, TOGGLE_SORT),
+		filter: tableOperation(filterPointer, FILTER_CHANGED),
+		search: tableOperation(searchPointer, SEARCH_CHANGED),
+		slice: compose(updateTableState(slicePointer, PAGE_CHANGED), () => table.exec()),
+		exec,
+		eval(state = tableState) {
+			return Promise
+				.resolve()
+				.then(() => {
+					const sortFunc = sortFactory(sortPointer.get(state));
+					const searchFunc = searchFactory(searchPointer.get(state));
+					const filterFunc = filterFactory(filterPointer.get(state));
+					const sliceFunc = sliceFactory(slicePointer.get(state));
+					const execFunc = compose(filterFunc, searchFunc, sortFunc, sliceFunc);
+					return execFunc(data).map(d => ({index: data.indexOf(d), value: d}));
+				});
+		},
+		onDisplayChange(fn) {
+			table.on(DISPLAY_CHANGED, fn);
+		},
+		getTableState() {
+			const sort = Object.assign({}, tableState.sort);
+			const search = Object.assign({}, tableState.search);
+			const slice = Object.assign({}, tableState.slice);
+			const filter = {};
+			for (const prop of Object.getOwnPropertyNames(tableState.filter)) {
+				filter[prop] = tableState.filter[prop].map(v => Object.assign({}, v));
+			}
+			return {sort, search, slice, filter};
+		}
+	};
 
-  const instance = Object.assign(table, api);
+	const instance = Object.assign(table, api);
 
-  Object.defineProperty(instance, 'length', {
-    get(){
-      return data.length;
-    }
-  });
+	Object.defineProperty(instance, 'length', {
+		get() {
+			return data.length;
+		}
+	});
 
-  return instance;
-};
+	return instance;
+}
 
-var tableDirective$1 = function ({
-  sortFactory: sortFactory$$1 = sortFactory,
-  filterFactory = filter$1,
-  searchFactory = search$1,
-  tableState = {sort: {}, slice: {page: 1}, filter: {}, search: {}},
-  data = []
-}, ...tableDirectives) {
+function tableDirective ({
+													 sortFactory: sortFactory$$1 = sortFactory,
+													 filterFactory = filter,
+													 searchFactory = search,
+													 tableState = {sort: {}, slice: {page: 1}, filter: {}, search: {}},
+													 data = []
+												 }, ...tableDirectives) {
 
-  const coreTable = table$3({sortFactory: sortFactory$$1, filterFactory, tableState, data, searchFactory});
+	const coreTable = table({sortFactory: sortFactory$$1, filterFactory, tableState, data, searchFactory});
 
-  return tableDirectives.reduce((accumulator, newdir) => {
-    return Object.assign(accumulator, newdir({
-      sortFactory: sortFactory$$1,
-      filterFactory,
-      searchFactory,
-      tableState,
-      data,
-      table: coreTable
-    }));
-  }, coreTable);
-};
+	return tableDirectives.reduce((accumulator, newdir) => Object.assign(accumulator, newdir({
+			sortFactory: sortFactory$$1,
+			filterFactory,
+			searchFactory,
+			tableState,
+			data,
+			table: coreTable
+		}))
+		, coreTable);
+}
 
-const table$2 = tableDirective$1;
+const table$1 = tableDirective;
 
 const get = curry((array, index) => array[index]);
 const replace = curry((array, newVal, index) => array.map((val, i) => (index === i ) ? newVal : val));
@@ -770,7 +778,7 @@ const patch = curry((array, newVal, index) => replace(array, Object.assign(array
 const remove = curry((array, index) => array.filter((val, i) => index !== i));
 const insert = curry((array, newVal, index) => [...array.slice(0, index), newVal, ...array.slice(index)]);
 
-var crud = function ({data, table}) {
+function crud ({data, table}) {
   // empty and refill data keeping the same reference
   const mutateData = (newData) => {
     data.splice(0);
@@ -790,7 +798,7 @@ var crud = function ({data, table}) {
     },
     get: get(data)
   };
-};
+}
 
 // it is like Redux but using smart table which already behaves more or less like a store and like a reducer in the same time.
 // of course this impl is basic: error handling etc are missing and reducer is "hardcoded"
@@ -874,9 +882,9 @@ function createStore (smartTable) {
 //data coming from global
 const tableState = {search: {}, filter: {}, sort: {}, slice: {page: 1, size: 20}};
 //the smart table
-const table$1 = table$2({data, tableState}, crud);
+const table$2 = table$1({data, tableState}, crud);
 //the store
-var store = createStore(table$1);
+var store = createStore(table$2);
 
 function debounce (fn, delay = 300) {
   let timeoutId;
@@ -1528,7 +1536,7 @@ function keyGrid (grid, options) {
   }
 }
 
-var keyboard = function (grid, {rowSelector = 'tr', cellSelector = 'td,th'}={}) {
+function keyboard (grid, {rowSelector = 'tr', cellSelector = 'td,th'}={}) {
   let lastFocus = null;
   const kg = keyGrid(grid, {rowSelector, cellSelector});
 
@@ -1553,14 +1561,14 @@ var keyboard = function (grid, {rowSelector = 'tr', cellSelector = 'td,th'}={}) 
       lastFocus = newCell;
     }
   });
-};
+}
 
-const table = onMount(n => {
+const table$3 = onMount(n => {
   store.dispatch({type: 'exec', args: []}); //kick smartTable
   keyboard(n.dom.querySelector('table'));
 });
 
-const PersonTable = table(() =>
+const PersonTable = table$3(() =>
   h( 'div', { id: "table-container" },
     h( WorkInProgress, null ),
     h( 'table', null,

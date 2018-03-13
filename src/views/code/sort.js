@@ -1,4 +1,4 @@
-import {default as smartTable, sort} from 'smart-table-core';
+import {table as smartTable, sort} from 'smart-table-core';
 
 const data = [
   {surname: 'Deubaze', name: 'Raymond'},

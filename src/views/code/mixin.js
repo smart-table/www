@@ -1,4 +1,4 @@
-import {default as smartTable} from 'smart-table-core';
+import {table as smartTable} from 'smart-table-core';
 
 //change the structure of returned items
 const smartTableExtension = function ({table, tableState, data}) {

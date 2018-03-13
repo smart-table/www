@@ -1,4 +1,4 @@
-import {default as smartTable} from 'smart-table-core';
+import {table as smartTable} from 'smart-table-core';
 
 const defaultTableState = {sort: {}, filter: {}, search: {}, slice: {page: 1}};
 //an extra (useless) behavior

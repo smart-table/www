@@ -55,7 +55,7 @@
 </svg></span></span><span>Demo</span></a></li></ul><div id="documentation-menu" role="menu"><ul><li role="menuitem"><a href="./getting-started.html"><span>Getting started</span></a></li><li role="menuitem"><a href="./table-state.html"><span>Table state</span></a></li><li role="menuitem"><a href="./table.html"><span>Table directive</span></a></li></ul><div role="separator"><div></div></div><ul><li role="menuitem"><a href="./sort.html"><span>Sort directive</span></a></li><li role="menuitem"><a href="./filter.html"><span>Filter directive</span></a></li><li role="menuitem"><a href="./search.html"><span>Search directive</span></a></li><li role="menuitem"><a href="./working-indicator.html"><span>Working Indicator directive</span></a></li><li role="menuitem"><a href="./summary.html"><span>Summary directive</span></a></li><li role="menuitem"><a href="./slice.html"><span>Slice directive</span></a></li></ul><div role="separator"><div></div></div><ul><li role="menuitem"><a href="./extend.html"><span>Extend smart table</span></a></li></ul></div><div id="integration-menu" role="menu"><ul><li role="menuitem"><a href="./vanilla.html"><span>Vanilla js</span></a></li><li role="menuitem"><a href="./react.html"><span>React</span></a></li><li role="menuitem"><a href="./preact.html"><span>Preact</span></a></li><li role="menuitem"><a href="./vuejs.html"><span>Vuejs</span></a></li><li role="menuitem"><a href="./flaco.html"><span>Flaco</span></a></li></ul></div></nav></header><main id="main"><div class="center-container"><h1>Documentation - Vuejs binding</h1></div><p>Following the project philosophy the <a href="https://github.com/smart-table/smart-table-vue">binding</a> for <a href="http://vuejs.org/">Vuejs</a> tries to be as <strong>declarative</strong> as possible and use <a href="http://vuejs.org/v2/guide/mixins.html#ad">mixins</a> to add programmatic behavior to your component so you can focus on the template part only.</p><p>See the example <a href="https://codepen.io/lorenzofox3/pen/GmEvLO?editors=1010">CodePen</a>. A more complete example should be available on <a href="https://github.com/smart-table/smart-table-vue">the project repository</a>.</p><h2>Usage</h2><p>The mixins will be built around the <em>directives</em> shown in the documentation part of this website with the following conventions:</p><ul><li>The directive instance will be available on your component as <code>this.stDirective</code>.</li><li>All the directive methods will be bound to the component so if the directive exposes a <code>toggle</code> method, the component will do as well.</li><li>The part of the table state relevant to the directive will be watched and available on your component as <code>this.stState</code>.</li><li>When the directive needs some configuration, you should be able to pass the data through attributes as explained in the following detailed documentation. Most of them will require the instance of your smart table as the <code>smart-table</code> attribute</li></ul><div class="framed method-container"><h3>Table mixin</h3><p>This mixin should help you to create the root component. It will expose the currently displayed collection as the <code>displayed</code> property.</p><p>The only (and mandatory) configuration attribute will be the instance of your smart table</p><pre class="language-markup"><code class="language-markup"><span class="token keyword">import</span> <span class="token punctuation">{</span>table<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'smart-table-core'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span>table <span class="token keyword">as</span> tableMixin<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'smart-table-vue'</span>
 
-<span class="token comment" spellcheck="true">// your smart table instance</span>
+<span class="token comment">// your smart table instance</span>
 <span class="token keyword">const</span> persons <span class="token operator">=</span> <span class="token function">table</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
   data<span class="token punctuation">:</span> <span class="token punctuation">[</span>
     <span class="token punctuation">{</span> surname<span class="token punctuation">:</span> <span class="token string">"Renard"</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">"Laurent"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -63,7 +63,7 @@
   <span class="token punctuation">]</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// your table component (using the table component)</span>
+<span class="token comment">// your table component (using the table component)</span>
 Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span><span class="token string">"PersonTable"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
   mixins<span class="token punctuation">:</span> <span class="token punctuation">[</span>tableMixin<span class="token punctuation">]</span><span class="token punctuation">,</span>
   template<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`
@@ -84,7 +84,7 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
     `</span></span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//your app: the table component is mounted and ready to be used (ie the displayed collection will react on any table state change)</span>
+<span class="token comment">//your app: the table component is mounted and ready to be used (ie the displayed collection will react on any table state change)</span>
 <span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
   el<span class="token punctuation">:</span> <span class="token string">"#container"</span><span class="token punctuation">,</span>
   data<span class="token punctuation">:</span> <span class="token punctuation">{</span>
@@ -93,7 +93,7 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
   template<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`&lt;Person-table :smart-table="smartTable"/>`</span></span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre></div><div class="framed method-container"><h3>Sort mixin</h3><p>This mixin will help you to use the sort directive.</p><h4>Configurations attributes</h4><dl><dt class="mandatory">smart-table</dt><dd>The instance of smart table</dd><dt>st-sort</dt><dd>The pointer to the sorted property</dd><dt>st-sort-cycle</dt><dd>Whether the toggle will cycle through the 3 sort states or simply pass from ascending sort to descending sort only (default to false)</dd></dl><h4>Example</h4><p>Here is an example of sortable header which will toggle the sort state when clicked and will change its class name based on the current sort state</p><pre class="language-markup"><code class="language-markup"><span class="token keyword">import</span> <span class="token punctuation">{</span>sort<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'smart-table-vue'</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//use "sort" mixin to add a sortable behavior to an header</span>
+<span class="token comment">//use "sort" mixin to add a sortable behavior to an header</span>
 Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span><span class="token string">"SortableHeader"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
   mixins<span class="token punctuation">:</span> <span class="token punctuation">[</span>sort<span class="token punctuation">]</span><span class="token punctuation">,</span>
   template<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`&lt;th v-bind:class="[activeClass]"  v-on:click="toggle">&lt;slot>&lt;/slot>&lt;/th>`</span></span><span class="token punctuation">,</span>
@@ -114,8 +114,8 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//you can then use this component in other component template passing the relevant configuration</span>
-<span class="token comment" spellcheck="true">/*
+<span class="token comment">//you can then use this component in other component template passing the relevant configuration</span>
+<span class="token comment">/*
  `
  &lt;table>
    &lt;thead>
@@ -140,7 +140,7 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
     <span class="token keyword">return</span> <span class="token punctuation">{</span>searchText<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">}</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token function">created</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>commit <span class="token operator">=</span> <span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//this.search is the directive method</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">commit</span> <span class="token operator">=</span> <span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//this.search is the directive method</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
   watch<span class="token punctuation">:</span> <span class="token punctuation">{</span>
     searchText<span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -149,8 +149,8 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//you can then use this component in other component template passing the relevant configuration</span>
-<span class="token comment" spellcheck="true">/*
+<span class="token comment">//you can then use this component in other component template passing the relevant configuration</span>
+<span class="token comment">/*
  `
  &lt;table>
  &lt;thead>
@@ -177,7 +177,7 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
     <span class="token keyword">return</span> <span class="token punctuation">{</span>filterText<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">}</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token function">created</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>commit <span class="token operator">=</span> <span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function-variable function">commit</span> <span class="token operator">=</span> <span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
   watch<span class="token punctuation">:</span> <span class="token punctuation">{</span>
     filterText<span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -186,8 +186,8 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//you can then use this component in other component template passing the relevant configuration</span>
-<span class="token comment" spellcheck="true">/*
+<span class="token comment">//you can then use this component in other component template passing the relevant configuration</span>
+<span class="token comment">/*
  `
  &lt;table>
  &lt;thead>
@@ -225,8 +225,8 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// you can the use this component</span>
-<span class="token comment" spellcheck="true">/*
+<span class="token comment">// you can the use this component</span>
+<span class="token comment">/*
  &lt;table>
 ...
  &lt;tfoot>
@@ -245,8 +245,8 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
     &lt;/div>`</span></span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">//you can then use this component in other component template passing the relevant configuration</span>
-<span class="token comment" spellcheck="true">/*
+<span class="token comment">//you can then use this component in other component template passing the relevant configuration</span>
+<span class="token comment">/*
  `
 &lt;div>
   &lt;loading-indicator :smart-table="smartTable"/>
@@ -255,7 +255,7 @@ Vue<span class="token punctuation">.</span><span class="token function">componen
   &lt;/table>
 &lt;/div>
  `
- */</span></code></pre></div></main><footer id="main-footer"><p>Made with love in <span class="visually-hidden">Cuba</span> <img src="./assets/cuba.svg" alt="Cuba"></p><p>MIT licence - 2017 - Laurent Renard copyright</p><a href="https://github.com/smart-table/smart-table-core"><span class="visually-hidden">Source code</span><span class="svg-container"><!-- Generated by IcoMoon.io -->
+ */</span></code></pre></div></main><footer id="main-footer"><p>Made with love in <span class="visually-hidden">Cuba</span> <img src="./assets/cuba.svg" alt="Cuba"></p><p>MIT licence - 2018 - Laurent Renard copyright</p><a href="https://github.com/smart-table/smart-table-core"><span class="visually-hidden">Source code</span><span class="svg-container"><!-- Generated by IcoMoon.io -->
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
 <title>github</title>
 <path d="M16 0.395c-8.836 0-16 7.163-16 16 0 7.069 4.585 13.067 10.942 15.182 0.8 0.148 1.094-0.347 1.094-0.77 0-0.381-0.015-1.642-0.022-2.979-4.452 0.968-5.391-1.888-5.391-1.888-0.728-1.849-1.776-2.341-1.776-2.341-1.452-0.993 0.11-0.973 0.11-0.973 1.606 0.113 2.452 1.649 2.452 1.649 1.427 2.446 3.743 1.739 4.656 1.33 0.143-1.034 0.558-1.74 1.016-2.14-3.554-0.404-7.29-1.777-7.29-7.907 0-1.747 0.625-3.174 1.649-4.295-0.166-0.403-0.714-2.030 0.155-4.234 0 0 1.344-0.43 4.401 1.64 1.276-0.355 2.645-0.532 4.005-0.539 1.359 0.006 2.729 0.184 4.008 0.539 3.054-2.070 4.395-1.64 4.395-1.64 0.871 2.204 0.323 3.831 0.157 4.234 1.026 1.12 1.647 2.548 1.647 4.295 0 6.145-3.743 7.498-7.306 7.895 0.574 0.497 1.085 1.47 1.085 2.963 0 2.141-0.019 3.864-0.019 4.391 0 0.426 0.288 0.925 1.099 0.768 6.354-2.118 10.933-8.113 10.933-15.18 0-8.837-7.164-16-16-16z"></path>

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import reactSt from './smart-table.js';
-import st from 'smart-table-core';
+import {table as st} from 'smart-table-core';
 
 // your row component
 const Row = ({value}) => {

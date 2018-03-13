@@ -1,4 +1,4 @@
-import {default as smartTable} from 'smart-table-core';
+import {table as smartTable} from 'smart-table-core';
 
 const loggerAdvice = (...fns) => object => {
   const output = Object.assign({}, object);
