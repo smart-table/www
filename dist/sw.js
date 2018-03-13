@@ -77,7 +77,7 @@ self.__precacheManifest = [
   },
   {
     "url": "index.html",
-    "revision": "99d099bc3dce667a454ec0230b71a24f"
+    "revision": "cee4777ed37f80ce418376819b7445a4"
   },
   {
     "url": "preact.html",
