@@ -37,11 +37,11 @@ self.__precacheManifest = [
   },
   {
     "url": "assets/demo.js",
-    "revision": "bc4977ced1c882c6e32ac690b27691af"
+    "revision": "27ff8b8d158319c720c8019f1ef91ec0"
   },
   {
     "url": "assets/demo.min.js",
-    "revision": "35f328e03a4f1d60016b5990e43e0c94"
+    "revision": "bb3f46bb7ce60629e947a129582020e9"
   },
   {
     "url": "assets/logo.svg",
