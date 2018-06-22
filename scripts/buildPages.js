@@ -60,7 +60,7 @@ function highlight (root) {
 const pages = fs.readdirSync(path.join(process.cwd(), '/src/views/pages'));
 for (let page of pages) {
   const [name, extension] = page.split('.');
-  const stream = fs.createWriteStream(path.join(process.cwd(), `/dist/${name}.html`));
+  const stream = fs.createWriteStream(path.join(process.cwd(), `/docs/${name}.html`));
   const html = pug.renderFile(path.join(process.cwd(), `/src/views/pages/${page}`), Object.assign({highlight: highlight(codeRoot)}, opts[name] || {}));
   stream.write(html);
 }

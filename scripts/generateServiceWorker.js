@@ -1,9 +1,9 @@
 const wb = require('workbox-build');
 
 wb.generateSW({
-  globDirectory: './dist/',
+  globDirectory: './docs/',
   globPatterns: ['**\/*.{html,js,css,svg}'],
-  swDest: './dist/sw.js',
+  swDest: './docs/sw.js',
   // modifyUrlPrefix:{
   //   'assets': '.'
   // }

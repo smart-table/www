@@ -4,9 +4,9 @@
   "description": "documentation website for smart-table",
   "main": "index.js",
   "scripts": {
-    "build:clean": "rm -rf ./dist && mkdir -p ./dist/assets",
+    "build:clean": "rm -rf ./docs && mkdir -p ./docs/assets",
     "build:pages": "node ./scripts/buildPages.js",
-    "build:assets": "cp -f ./src/assets/*.svg ./src/assets/*.css ./src/assets/*.js ./dist/assets/",
+    "build:assets": "cp -f ./src/assets/*.svg ./src/assets/*.css ./src/assets/*.js ./docs/assets/",
     "build:svg": "node ./scripts/buildInlineSvgs.js",
     "build:theme": "node ./scripts/buildTheme.js && cssnano < ./node_modules/prismjs/themes/prism-tomorrow.css > ./src/assets/prism-tomorrow.css",
     "build:demo": "rollup -c ./src/examples/rollup.config.js && ./node_modules/.bin/babili  src/assets/demo.js --out-file src/assets/demo.min.js && ./node_modules/.bin/babili src/assets/dataBundle.js --out-file src/assets/dataBundle.min.js && cssnano < src/examples/demo.css > src/assets/demo.css",
