@@ -1,0 +1,10 @@
+extends ../layout/main
+include  ../mixins/helper
+include  ../mixins/code
+include  ../mixins/layout
+
+block content
+    +center-container()
+        h1 Documentation - Angular binding
+    p The binding for #[a(href="https://angular.io/") Angular] is made of an Injectable service which orchestrates all dependant directives and forward changes notifications; and a set of attribute directives which allow you to quickly set up a smart table component in a declarative manner.
+    p Refer to #[a(href='https://itnext.io/smart-table-for-angular-part-1-515ef6cb2d0a') the tutorial] for more details.

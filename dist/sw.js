@@ -11,7 +11,7 @@
  * See https://goo.gl/2aRDsh
  */
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.0.0/workbox-sw.js");
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js");
 
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to
@@ -19,6 +19,10 @@ importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.0.0/workbox
  * See https://goo.gl/S9QRab
  */
 self.__precacheManifest = [
+  {
+    "url": "angular.html",
+    "revision": "8c1b07d3525de5bbbdb40e8797652abb"
+  },
   {
     "url": "assets/cuba.svg",
     "revision": "72cb307a9d7f4e1d44d32f426553a94e"
@@ -57,71 +61,71 @@ self.__precacheManifest = [
   },
   {
     "url": "demo.html",
-    "revision": "68fe6c276c453eeee4c58670fb761379"
+    "revision": "24c62ca721cf133b3d2f2be59df58473"
   },
   {
     "url": "extend.html",
-    "revision": "b7b2d3656353663f8c79b240b245e6d2"
+    "revision": "5e55f5c3b8ab7d67e139e2268dd21e74"
   },
   {
     "url": "filter.html",
-    "revision": "4527f61998359726a36cd964df735b3e"
+    "revision": "14b3e5c3a74dccc40918173a38df51df"
   },
   {
     "url": "flaco.html",
-    "revision": "8b274756844bf7507f75ec7058e8df07"
+    "revision": "34eb77c37ae6ab3f92d9d520a6cf94c9"
   },
   {
     "url": "getting-started.html",
-    "revision": "562c95e019fdfff4d61bcf244ef0768c"
+    "revision": "791407bf849df900625fee0c0c69842f"
   },
   {
     "url": "index.html",
-    "revision": "cee4777ed37f80ce418376819b7445a4"
+    "revision": "76dd7846d71bae54fcb0187dad8c3d4a"
   },
   {
     "url": "preact.html",
-    "revision": "f273ff5ccc31a2bc19d7d15cf58b9183"
+    "revision": "660336490653006ba6193c2144c4e775"
   },
   {
     "url": "react.html",
-    "revision": "e481d20db080b5641581bb6d3c6e6ba9"
+    "revision": "80e7cf793a9199f0facbf3208eff4d2f"
   },
   {
     "url": "search.html",
-    "revision": "6bef6470bb7efb65d0d7bc64388e6528"
+    "revision": "14795b817e287e1103cd308df5262e63"
   },
   {
     "url": "slice.html",
-    "revision": "b9d85e0500feb90d2c35e0afcdcbb7f1"
+    "revision": "e77c6fa7082de90a0476f3fb2a00371e"
   },
   {
     "url": "sort.html",
-    "revision": "935f8eb65d5cea3f4d274ad8fa2326ff"
+    "revision": "fe9272fc831e2413954b9cb6eb6d241f"
   },
   {
     "url": "summary.html",
-    "revision": "4fa9842a9fe30b2fe1e573dd9409c0cf"
+    "revision": "64b37e2fbbfc77e917d7b362c48c79bf"
   },
   {
     "url": "table-state.html",
-    "revision": "cfcde2f1d44ec0e72005ea93c631fd9e"
+    "revision": "a5d84115708150195f2fa1e3f6e87c31"
   },
   {
     "url": "table.html",
-    "revision": "c4a8c2c0b595869ae07c42804c18a0f6"
+    "revision": "aa5427be4097bc14f4d6274ce5d2fe1e"
   },
   {
     "url": "vanilla.html",
-    "revision": "78ea02b5e8801c612f606852a7a8bd4f"
+    "revision": "ac57176ae9ce3bc74813d0dd33bc59e3"
   },
   {
     "url": "vuejs.html",
-    "revision": "6adf12236e0bfa83c4b4475a462b5112"
+    "revision": "0590386fe9ad9814ae50e4d18496c80f"
   },
   {
     "url": "working-indicator.html",
-    "revision": "03fc180eee68bcbd559da12853cd8692"
+    "revision": "615025fab4167ef947ba274bdabc9a82"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
