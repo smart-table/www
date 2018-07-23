@@ -4,6 +4,7 @@ html(lang='en')
         meta(charset='utf8')
         title #{title}
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(name="description", content=description)
         link(rel="icon",href="./assets/logo.svg")
         link(href='./assets/theme.css', rel='stylesheet')
         link(href='./assets/prism-tomorrow.css', rel='stylesheet')
@@ -20,9 +21,9 @@ html(lang='en')
             script(src='./assets/dataBundle.min.js')
             script(src='./assets/demo.min.js')
         script.
-            if(navigator.serviceWorker) {
-                  navigator.serviceWorker.register('./sw.js')
-                  .catch(function(err) {
-                    console.error('Unable to register service worker.', err);
-                  });
-            }
+          if (navigator.serviceWorker) {
+            navigator.serviceWorker.register('./sw.js')
+              .catch(function (err) {
+                console.error('Unable to register service worker.', err);
+              });
+          }
