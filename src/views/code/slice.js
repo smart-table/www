@@ -1,22 +1,22 @@
-import {table as smartTable, slice} from 'smart-table-core';
+import {smartTable, paginationDirective as slice} from 'smart-table-core';
 
 const data = [
-  {surname: 'Deubaze', name: 'Raymond'},
-  {surname: 'Foo', name: 'Bar'},
-  {surname: 'Doe', name: 'John'}
+    {surname: 'Deubaze', name: 'Raymond'},
+    {surname: 'Foo', name: 'Bar'},
+    {surname: 'Doe', name: 'John'}
 ];
 
 const smartCollection = smartTable({
-  data, tableState: {
-    sort: {},
-    filter: {},
-    search: {},
-    slice: {page: 1, size: 1}
-  }
+    data, tableState: {
+        sort: {},
+        filter: {},
+        search: {},
+        slice: {page: 1, size: 1}
+    }
 });
 
 smartCollection.onDisplayChange((items) => {
-  console.log(items.map(item => item.value));
+    console.log(items.map(item => item.value));
 });
 
 const directive = slice({table: smartCollection});

@@ -1,4 +1,4 @@
-import {table as smartTable} from 'smart-table-core';
+import {smartTable} from 'smart-table-core';
 import crud from 'smart-table-crud';
 import {createStore} from './reduxSmartTable';
 

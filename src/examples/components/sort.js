@@ -1,6 +1,6 @@
 import {h, connect} from 'flaco';
 import store from '../lib/store';
-import json from 'smart-table-json-pointer';
+import {pointer as json} from 'smart-table-json-pointer';
 import {IconSort, IconSortAsc, IconSortDesc} from './icons';
 
 const actions = {

@@ -1,7 +1,7 @@
 import {h, connect} from 'flaco';
 import {debounce} from './helper';
 import store from '../lib/store';
-import json from 'smart-table-json-pointer';
+import {pointer as json} from 'smart-table-json-pointer';
 
 const actions = {
   search: (value, scope) => store.dispatch({type: 'search', args: [{value, scope}]})

@@ -21,7 +21,7 @@ importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox
 self.__precacheManifest = [
   {
     "url": "angular.html",
-    "revision": "ffaf67e0ec1d0a01e05ec3d3bd52c960"
+    "revision": "8624bdeecf6f107e50c22ec72facf548"
   },
   {
     "url": "assets/cuba.svg",
@@ -65,11 +65,11 @@ self.__precacheManifest = [
   },
   {
     "url": "extend.html",
-    "revision": "b1194a9cb226b27f13f5b1c6123e5121"
+    "revision": "b984124313ac46bb67307284ae39f855"
   },
   {
     "url": "filter.html",
-    "revision": "95c9ebd8503ed200421a421272929c7e"
+    "revision": "25409db123fed611cd2f548cbb32a768"
   },
   {
     "url": "flaco.html",
@@ -77,7 +77,7 @@ self.__precacheManifest = [
   },
   {
     "url": "getting-started.html",
-    "revision": "82fbaddae6441aa4a6766793d9eac62b"
+    "revision": "656cee273186c8c6940c0d04976b3c2f"
   },
   {
     "url": "index.html",
@@ -89,27 +89,27 @@ self.__precacheManifest = [
   },
   {
     "url": "react.html",
-    "revision": "e4bef34c1260e052ae9283842bf67845"
+    "revision": "cdd26e2433e257f732e480ebf7bebd39"
   },
   {
     "url": "search.html",
-    "revision": "f64ec7c67d8f207bad34fc9c6cb5db27"
+    "revision": "bd30625bde7a682bba4ac91628ee8b07"
   },
   {
     "url": "slice.html",
-    "revision": "6a8710f17c5926b5d212323bbe985bc5"
+    "revision": "b3a81ddb8744462dee8088a4db588336"
   },
   {
     "url": "sort.html",
-    "revision": "f870b5ff426afc829fa22a68d127f956"
+    "revision": "0353cf7b55720a37eaaba39ec13527ed"
   },
   {
     "url": "summary.html",
-    "revision": "5f9b149c01cd551c7e4ee46b6d4515ed"
+    "revision": "c1f769f324c8e4e9577a2a933189c9a5"
   },
   {
     "url": "table-state.html",
-    "revision": "631f1eb3624168d33c73134b760959f9"
+    "revision": "3a3e010667416266a5ea25ed291e5500"
   },
   {
     "url": "table.html",
@@ -125,7 +125,7 @@ self.__precacheManifest = [
   },
   {
     "url": "working-indicator.html",
-    "revision": "6cf62b11b3c872d65dc2e9a99e5b5ca8"
+    "revision": "05d6eb6286652a0a9a445f10793bdaa7"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
